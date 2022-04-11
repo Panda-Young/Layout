@@ -105,6 +105,7 @@ int view_all_info()
         perror("malloc failed: ");
         return EALLOC;
     }
+    head->next = NULL;
 
     bool any_info = FALSE;
     nodeptr_t current = head;
