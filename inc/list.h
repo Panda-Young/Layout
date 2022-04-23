@@ -11,6 +11,30 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#define printf_grey(fmt, args...) \
+    printf("\e[1;30m" fmt "\e[0m", ## args)
+
+#define printf_red(fmt, args...) \
+    printf("\e[1;31m" fmt "\e[0m", ## args)
+
+#define printf_green(fmt, args...) \
+    printf("\e[1;32m" fmt "\e[0m", ## args)
+
+#define printf_yellow(fmt, args...) \
+    printf("\e[1;33m" fmt "\e[0m", ## args)
+
+#define printf_blue(fmt, args...) \
+    printf("\e[1;34m" fmt "\e[0m", ## args)
+
+#define printf_purple(fmt, args...) \
+    printf("\e[1;35m" fmt "\e[0m", ## args)
+
+#define printf_light_blue(fmt, args...) \
+    printf("\e[1;36m" fmt "\e[0m", ## args)
+
+#define printf_white(fmt, args...) \
+    printf("\e[1;37m" fmt "\e[0m", ## args)
+
 #define FILE_NAME   "stu_info.txt"
 #define NUM_ELEMENT 7
 #define TRY_TIMES   3

@@ -36,16 +36,20 @@ void HiddenInput(char *passwd)
 
 int verify_passwd()
 {
-    printf("Please input password.\n");
     char passwd[20];
     int try_num = 0;
+    printf("Please input password. %d/%d\n", try_num + 1, TRY_TIMES);
     while (try_num != TRY_TIMES) {
         try_num++;
         HiddenInput(passwd);
         if (strcmp(passwd, "hello") == 0) {
             return EOK;
         }
-        printf("Mismatch! Please reinput password. %d/%d\n", try_num, TRY_TIMES);
+        if (try_num != TRY_TIMES) {
+            printf_red("Mismatch! Please reinput password. %d/%d\n", try_num + 1, TRY_TIMES);
+        } else {
+            printf_red("Mismatch! The number of attempts exceeds the limit. Exit!\n");
+        }
     }
     return EPASSWD;
 }
