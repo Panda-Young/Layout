@@ -62,10 +62,18 @@ nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
     return newnode;
 }
 
-int save_to_file(nodeptr_t tmp, int mode)
+/**
+ * @Descripttion: save node info to file
+ * @param {nodeptr_t} tmp
+ * @param {int} mode
+ *              0   将当前至结尾所有节点信息写入清空的文件，一般用于头节点
+ *              1   将当前节点信息追加至文件末尾
+ * @return {int}
+ */
+int save_to_file(nodeptr_t tmp, bool mode)
 {
     FILE *fp = NULL;
-    if (mode == 1) { // 将当前至结尾所有节点信息写入清空的文件，一般用于头节点
+    if (mode == 0) {
         if ((fp = fopen(FILE_NAME, "w+")) == NULL) {  
             perror("open file failed: ");
             return EFOPEN;
@@ -76,7 +84,7 @@ int save_to_file(nodeptr_t tmp, int mode)
                         tmp->data.stu_age, tmp->data.stu_sex);
             tmp = tmp->next;
         }
-    } else if (mode == 0){ // 将当前节点信息追加至文件末尾
+    } else if (mode == 1){
         if ((fp = fopen(FILE_NAME, "a+")) == NULL) {
             perror("open file failed: ");
             return EFOPEN;
@@ -92,6 +100,48 @@ int save_to_file(nodeptr_t tmp, int mode)
     return EOK;
 }
 
+/**
+ * @Descripttion: 
+ * @param {nodeptr_t} head
+ * @param {unsigned char} *confirm_code
+ * @return {int}
+ */
+int create_file(nodeptr_t head, unsigned char *confirm_code)
+{
+    if (head == NULL) {
+        return EALLOC;
+    }
+    if(*confirm_code == 'y' || *confirm_code == 'Y') {
+        nodeptr_t current = head;
+        while (1) {
+            printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
+            scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id, 
+                    &current->data.score[0], &current->data.score[1], &current->data.score[2],
+                    &current->data.stu_age, &current->data.stu_sex);
+
+            printf("Whether continue to add info? Press 'Y' or any other key to End!\n");
+            if (scanf("%c", confirm_code) && *confirm_code == 10) {
+                scanf("%c", confirm_code);
+            }
+            if (*confirm_code == 'y' || *confirm_code == 'Y') {
+                current = add_endnode(current);
+            } else {
+                break;
+            }
+        }
+        save_to_file(head, 0);
+    } else {
+        printf_yellow("Welcome to Use next time!\n");
+        *confirm_code = 0;
+    }
+    return EOK;
+}
+
+/**
+ * @Descripttion: 
+ * @param {void}
+ * @return {int}
+ */
 int view_all_info()
 {
     FILE *fp = NULL;

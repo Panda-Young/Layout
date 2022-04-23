@@ -66,7 +66,8 @@ int verify_passwd();
 nodeptr_t add_endnode(nodeptr_t end);
 nodeptr_t add_beginnode(nodeptr_t head);
 nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current);
-int save_to_file(nodeptr_t tmp, int mode);
+int save_to_file(nodeptr_t tmp, bool mode);
+int create_file(nodeptr_t head, unsigned char *confirm_code);
 int view_all_info(void);
 
 #endif
