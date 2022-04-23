@@ -70,7 +70,7 @@ int save_to_file(nodeptr_t tmp, int mode)
             perror("open file failed: ");
             return EFOPEN;
         }
-        while(tmp->next != NULL) {
+        while(tmp != NULL) {
             fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", tmp->data.name, tmp->data.stu_id, 
                         tmp->data.score[0], tmp->data.score[1], tmp->data.score[2],
                         tmp->data.stu_age, tmp->data.stu_sex);
