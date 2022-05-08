@@ -48,14 +48,14 @@ nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
         perror("malloc failed: ");
         return NULL;
     }
-#ifndef ANOTHER_WAY
+
     nodeptr_t tmp = NULL;
+#ifdef ANOTHER_WAY // 任意节点前
     for (tmp = head; tmp->next != current; tmp = tmp->next);
     tmp->next = newnode;
     newnode->next = current;
-#endif
-#ifdef ANOTHER_WAY
-    nodeptr_t tmp = current->next;
+#else // 任意节点后
+    tmp = current->next;
     newnode->next = tmp;
     current->next = newnode;
 #endif
@@ -137,12 +137,7 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
     return EOK;
 }
 
-/**
- * @Descripttion: 
- * @param {void}
- * @return {int}
- */
-int view_all_info()
+int read_file(nodeptr_t head, bool *any_info)
 {
     FILE *fp = NULL;
     if ((fp = fopen(FILE_NAME, "r")) == NULL) {
@@ -150,36 +145,96 @@ int view_all_info()
         return EFOPEN;
     }
 
-    nodeptr_t head = (nodeptr_t)malloc(sizeof(node_t));
-    if (head == NULL) {
-        perror("malloc failed: ");
-        return EALLOC;
-    }
-    head->next = NULL;
-
-    bool any_info = FALSE;
     nodeptr_t current = head;
     while (fscanf(fp, "%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id, 
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
             &current->data.stu_age, &current->data.stu_sex) == NUM_ELEMENT) {
-        any_info = TRUE;
+        *any_info = TRUE;
         if(fgetc(fp) == 10 && fgetc(fp) == EOF) {
             break;
         } else {
             fseek(fp, -1, SEEK_CUR);
-            current = add_endnode(current);
+            if ((current = add_endnode(current)) ==  NULL) {
+                printf ("add new link node error\n");
+                return EALLOC;
+            }
         }
+    }
+    fclose(fp);
+    return EOK;
+}
+
+/**
+ * @Descripttion: 
+ * @param {nodeptr_t} head
+ * @param {unsigned char} *confirm_code
+ * @return {int}
+ */
+int view_info(nodeptr_t head, unsigned char *confirm_code)
+{
+    if (head == NULL) {
+        printf("malloc failed");
+    }
+
+    bool any_info = FALSE;
+    int result    = read_file(head, &any_info);
+    if (result != EOK) {
+        printf("read file error, result %d", result);
     }
 
     if (any_info) {
         printf("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
-        for (current = head; current != NULL; current = current->next) {
+        for (nodeptr_t current = head; current != NULL; current = current->next) {
             printf("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", current->data.name, current->data.stu_id, 
                 current->data.score[0], current->data.score[1], current->data.score[2],
                 current->data.stu_age, current->data.stu_sex);
         }
+    } else {
+        printf("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
+        if (scanf("%c", confirm_code) && *confirm_code == 10) {
+            scanf("%c", confirm_code);
+        }
+        create_file(head, confirm_code);
     }
 
-    fclose(fp);
+    return EOK;
+}
+
+/**
+ * @Descripttion: 
+ * @param {nodeptr_t} head
+ * @return {int}
+ */
+int add_info(nodeptr_t head, unsigned char *confirm_code)
+{
+    if (head == NULL) {
+        printf("malloc failed");
+    }
+
+    while (1) {
+        nodeptr_t current = head;
+        printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
+        scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id, 
+                &current->data.score[0], &current->data.score[1], &current->data.score[2],
+                &current->data.stu_age, &current->data.stu_sex);
+        save_to_file(current, 1);
+
+        printf("Whether continue to add info? Press 'Y' or any other key to End!\n");
+        if (scanf("%c", confirm_code) && *confirm_code == 10) {
+            scanf("%c", confirm_code);
+        }
+        if (*confirm_code == 'y' || *confirm_code == 'Y') {
+#ifdef ANOTHER_WAY
+            head = add_beginnode(head);
+#elif ANOTHER_WAY2
+            current = add_randomnode(head, head);
+#else
+            current = add_endnode(current);
+#endif
+        } else {
+            break;
+        }
+    }
+
     return EOK;
 }

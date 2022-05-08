@@ -11,30 +11,16 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define printf_grey(fmt, args...) \
-    printf("\e[1;30m" fmt "\e[0m", ## args)
+#define printf_grey(fmt, args...)       printf("\e[1;30m" fmt "\e[0m", ## args)
+#define printf_red(fmt, args...)        printf("\e[1;31m" fmt "\e[0m", ## args)
+#define printf_green(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args)
+#define printf_yellow(fmt, args...)     printf("\e[1;33m" fmt "\e[0m", ## args)
+#define printf_blue(fmt, args...)       printf("\e[1;34m" fmt "\e[0m", ## args)
+#define printf_purple(fmt, args...)     printf("\e[1;35m" fmt "\e[0m", ## args)
+#define printf_light_blue(fmt, args...) printf("\e[1;36m" fmt "\e[0m", ## args)
+#define printf_white(fmt, args...)      printf("\e[1;37m" fmt "\e[0m", ## args)
 
-#define printf_red(fmt, args...) \
-    printf("\e[1;31m" fmt "\e[0m", ## args)
-
-#define printf_green(fmt, args...) \
-    printf("\e[1;32m" fmt "\e[0m", ## args)
-
-#define printf_yellow(fmt, args...) \
-    printf("\e[1;33m" fmt "\e[0m", ## args)
-
-#define printf_blue(fmt, args...) \
-    printf("\e[1;34m" fmt "\e[0m", ## args)
-
-#define printf_purple(fmt, args...) \
-    printf("\e[1;35m" fmt "\e[0m", ## args)
-
-#define printf_light_blue(fmt, args...) \
-    printf("\e[1;36m" fmt "\e[0m", ## args)
-
-#define printf_white(fmt, args...) \
-    printf("\e[1;37m" fmt "\e[0m", ## args)
-
+#define DEBUG_MSG   0
 #define FILE_NAME   "stu_info.txt"
 #define NUM_ELEMENT 7
 #define TRY_TIMES   3
@@ -68,6 +54,8 @@ nodeptr_t add_beginnode(nodeptr_t head);
 nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current);
 int save_to_file(nodeptr_t tmp, bool mode);
 int create_file(nodeptr_t head, unsigned char *confirm_code);
-int view_all_info(void);
+int read_file(nodeptr_t head, bool *any_info);
+int view_info(nodeptr_t head, unsigned char *confirm_code);
+int add_info(nodeptr_t head, unsigned char *confirm_code);
 
 #endif

@@ -22,19 +22,19 @@ int main()
     unsigned char ui_code = 13;
 
     if (access(FILE_NAME, F_OK)) {
-        printf("There is no Students' infomation here. Press 'Y' or any other key to Exit!\n");
+        printf("There is no Students' infomation here. Press 'Y' to add info or any other key to Exit!\n");
         scanf("%c", &ui_code);
         create_file(head, &ui_code);
     }
 
     while (ui_code != 0) {
         printf_yellow("Please follow the instructions.\n");
-        printf("0. Exit the system\n");
-        printf("1. View all info\n");
-        printf("2. Add info\n");
+        printf("0. Exit the system\t");
+        printf("1. View all info\t");
+        printf("2. Add info\t\t");
         printf("3. Delete info\n");
-        printf("4. Modify info\n");
-        printf("5. Find info\n");
+        printf("4. Modify info\t\t");
+        printf("5. Find info\t\t");
         printf("6. Sort by score\n");
 
         if (scanf("%c", &ui_code)  && ui_code == 10) {
@@ -45,21 +45,23 @@ int main()
             case 'q':
             case 'Q': {
                 printf_yellow("Welcome to Use next time!\n");
-                return EOK;
+                ui_code = 0;
+                break;
             }
             case '1':
             case 'v':
             case 'V': {
                 if (verify_passwd()) {
-                    return EPASSWD;
+                    ui_code = 0;
+                    break;    
                 }
-                view_all_info();
+                view_info(head, &ui_code);
                 break;
             }
             case '2':
             case 'a':
             case 'A': {
-                // add_info();
+                add_info(head, &ui_code);
                 break;
             }
             case '3':
@@ -88,9 +90,20 @@ int main()
             }
             default: {
                 printf_red("Invalid input. Exit!\n");
-                return EINPUT;
+                ui_code = 0;
+                break;            
             }
         }
     }
+
+    nodeptr_t current = head;
+    int counter = 1;
+    for (current = head; current != NULL; current = current->next) {
+#if DEBUG_MSG
+        printf_light_blue("%d\t current ptr %p\n",counter++, current);
+#endif
+        free(current);
+    }
+
     return EOK;
 }
