@@ -137,7 +137,14 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
     return EOK;
 }
 
-int read_file(nodeptr_t head, bool *any_info)
+/**
+ * @description: 
+ * @event: 
+ * @param {nodeptr_t} head
+ * @param {bool} *any_info
+ * @return {int}
+ */
+int read_file(nodeptr_t head)
 {
     FILE *fp = NULL;
     if ((fp = fopen(FILE_NAME, "r")) == NULL) {
@@ -145,11 +152,12 @@ int read_file(nodeptr_t head, bool *any_info)
         return EFOPEN;
     }
 
+    int node_num      = 0;
     nodeptr_t current = head;
     while (fscanf(fp, "%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id, 
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
             &current->data.stu_age, &current->data.stu_sex) == NUM_ELEMENT) {
-        *any_info = TRUE;
+        node_num++;
         if(fgetc(fp) == 10 && fgetc(fp) == EOF) {
             break;
         } else {
@@ -161,7 +169,7 @@ int read_file(nodeptr_t head, bool *any_info)
         }
     }
     fclose(fp);
-    return EOK;
+    return node_num;
 }
 
 /**
@@ -176,25 +184,23 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
         printf("malloc failed");
     }
 
-    bool any_info = FALSE;
-    int result    = read_file(head, &any_info);
-    if (result != EOK) {
-        printf("read file error, result %d", result);
-    }
+    int node_num = read_file(head);
 
-    if (any_info) {
+    if (node_num > 0) {
         printf("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
             printf("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", current->data.name, current->data.stu_id, 
                 current->data.score[0], current->data.score[1], current->data.score[2],
                 current->data.stu_age, current->data.stu_sex);
         }
-    } else {
+    } else if (node_num == 0) {
         printf("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
         if (scanf("%c", confirm_code) && *confirm_code == 10) {
             scanf("%c", confirm_code);
         }
         create_file(head, confirm_code);
+    } else {
+        printf("read file error, result %d", node_num);
     }
 
     return EOK;
@@ -235,6 +241,24 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
             break;
         }
     }
+    return EOK;
+}
+
+/**
+ * @description: 
+ * @event: 
+ * @param {nodeptr_t} head
+ * @return {int}
+ */
+int sort_info(nodeptr_t head)
+{
+    int node_num = read_file(head);
+    if (node_num > 2) {
+        bubble_sort(head);
+    } else {
+        printf("Information doesn't need to be sorted out. %d", node_num);
+    }
+    save_to_file(head, 0);
 
     return EOK;
 }

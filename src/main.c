@@ -1,6 +1,6 @@
 /*
  * @Descripttion: 
- * @version: 0.1.0
+ * @version: 0.1.2
  * @Author: PandaYoung
  * @Date: 2022-04-09 03:25:39
  */
@@ -85,7 +85,7 @@ int main()
             case '6':
             case 's':
             case 'S': {
-                // sort_info();
+                sort_info(head);
                 break;
             }
             default: {

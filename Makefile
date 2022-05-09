@@ -18,6 +18,7 @@ main : $(OBJ)
 
 clean:
 	-rm -rf build out
+	clear
 
 debug:
 	@echo $(SRC)
