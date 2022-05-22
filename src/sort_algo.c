@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @version: 0.1.0
  * @Author: PandaYoung
  * @Date: 2022-05-08 11:11:11
@@ -25,8 +25,8 @@ nodeptr_t bubble_sort(nodeptr_t head)
             if (p->data.stu_id > pnext->data.stu_id) {
                 swap_node(p, pnext);
             }
-            p = p->next;  
-            pnext = pnext->next;  
+            p = p->next;
+            pnext = pnext->next;
         }
         end = p;
     }

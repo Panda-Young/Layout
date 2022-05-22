@@ -58,7 +58,7 @@ int main()
             case 'V': {
                 if (verify_passwd()) {
                     ui_code = 0;
-                    break;    
+                    break;
                 }
                 view_info(head, &ui_code);
                 break;
@@ -96,7 +96,7 @@ int main()
             default: {
                 printf_red("Invalid input. Exit!\n");
                 ui_code = 0;
-                break;            
+                break;
             }
         }
     }

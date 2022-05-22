@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 0.1.0
  * @Author: PandaYoung
  * @Date: 2022-04-10 02:24:32
@@ -105,12 +105,12 @@ int save_to_file(nodeptr_t tmp, bool mode)
 {
     FILE *fp = NULL;
     if (mode == 0) {
-        if ((fp = fopen(FILE_NAME, "w+")) == NULL) {  
+        if ((fp = fopen(FILE_NAME, "w+")) == NULL) {
             perror("open file failed: ");
             return EFOPEN;
         }
         while(tmp != NULL) {
-            fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", tmp->data.name, tmp->data.stu_id, 
+            fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", tmp->data.name, tmp->data.stu_id,
                         tmp->data.score[0], tmp->data.score[1], tmp->data.score[2],
                         tmp->data.stu_age, tmp->data.stu_sex);
             tmp = tmp->next;
@@ -120,7 +120,7 @@ int save_to_file(nodeptr_t tmp, bool mode)
             perror("open file failed: ");
             return EFOPEN;
         }
-        fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", tmp->data.name, tmp->data.stu_id, 
+        fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", tmp->data.name, tmp->data.stu_id,
             tmp->data.score[0], tmp->data.score[1], tmp->data.score[2],
             tmp->data.stu_age, tmp->data.stu_sex);
     } else {
@@ -146,7 +146,7 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
         nodeptr_t current = head;
         while (1) {
             printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
-            scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id, 
+            scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
                     &current->data.stu_age, &current->data.stu_sex);
 
@@ -184,7 +184,7 @@ int read_file(nodeptr_t head)
 
     int node_num      = 0;
     nodeptr_t current = head;
-    while (fscanf(fp, "%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id, 
+    while (fscanf(fp, "%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
             &current->data.stu_age, &current->data.stu_sex) == NUM_ELEMENT) {
         node_num++;
@@ -250,7 +250,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
     while (1) {
         nodeptr_t current = head;
         printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
-        scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id, 
+        scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
                 &current->data.score[0], &current->data.score[1], &current->data.score[2],
                 &current->data.stu_age, &current->data.stu_sex);
         save_to_file(current, 1);
@@ -349,7 +349,7 @@ int sort_info(nodeptr_t head)
         printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
             printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
-                current->data.name, current->data.stu_id, 
+                current->data.name, current->data.stu_id,
                 current->data.score[0], current->data.score[1], current->data.score[2],
                 current->data.stu_age, current->data.stu_sex);
         }
