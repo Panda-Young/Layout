@@ -275,6 +275,33 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
 }
 
 /**
+ * @description: Delete someone's information
+ * @param {nodeptr_t} head
+ * @return {int}
+ */
+int delete_info(nodeptr_t head)
+{
+    unsigned int stu_id;
+    printf("Please input student id you want to delete.\n");
+    scanf("%d", &stu_id);
+
+    nodeptr_t current = head;
+    for (; current != NULL; current = current->next) {
+        if (current->data.stu_id == stu_id) {
+            nodeptr_t Ppre = head;
+            for (; Ppre->next != current; Ppre = Ppre->next);
+            Ppre->next = current->next;
+            free(current);
+            current = NULL;
+            break;
+        }
+    }
+    save_to_file(head, 0);
+
+    return EOK;
+}
+
+/**
  * @description: find somebody's information
  * @param {nodeptr_t} head
  * @return {int}

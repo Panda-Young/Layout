@@ -72,7 +72,7 @@ int main()
             case '3':
             case 'd':
             case 'D': {
-                // delete_info();
+                delete_info(head);
                 break;
             }
             case '4':
@@ -104,7 +104,7 @@ int main()
     nodeptr_t current = head;
     int counter = 1;
     for (current = head; current != NULL; current = current->next) {
-#if DEBUG_MSG
+#if DEBUG_FREE_MSG
         printf_light_blue("%d\t current ptr %p\n",counter++, current);
 #endif
         free(current);

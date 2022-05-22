@@ -65,6 +65,7 @@ int create_file(nodeptr_t head, unsigned char *confirm_code);
 int read_file(nodeptr_t head);
 int view_info(nodeptr_t head, unsigned char *confirm_code);
 int add_info(nodeptr_t head, unsigned char *confirm_code);
+int delete_info(nodeptr_t head);
 int find_info(nodeptr_t head);
 int sort_info(nodeptr_t head);
 
