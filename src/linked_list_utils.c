@@ -50,7 +50,7 @@ nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
     }
 
     nodeptr_t tmp = NULL;
-#ifdef ANOTHER_WAY // 任意节点前
+#if ANOTHER_WAY // 任意节点前
     for (tmp = head; tmp->next != current; tmp = tmp->next);
     tmp->next = newnode;
     newnode->next = current;
@@ -187,11 +187,11 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
     int node_num = read_file(head);
 
     if (node_num > 0) {
-        printf("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+        printf_green("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            printf("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", current->data.name, current->data.stu_id, 
-                current->data.score[0], current->data.score[1], current->data.score[2],
-                current->data.stu_age, current->data.stu_sex);
+            printf_green("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", current->data.name,
+                current->data.stu_id, current->data.score[0], current->data.score[1],
+                current->data.score[2], current->data.stu_age, current->data.stu_sex);
         }
     } else if (node_num == 0) {
         printf("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
@@ -230,7 +230,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
             scanf("%c", confirm_code);
         }
         if (*confirm_code == 'y' || *confirm_code == 'Y') {
-#ifdef ANOTHER_WAY
+#if ANOTHER_WAY
             head = add_beginnode(head);
 #elif ANOTHER_WAY2
             current = add_randomnode(head, head);
@@ -253,12 +253,26 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
 int sort_info(nodeptr_t head)
 {
     int node_num = read_file(head);
-    if (node_num > 2) {
+    if (node_num >= 2) {
+#if ANOTHER_WAY
+        nodeptr_t end = NULL;
+        for(end = head; end->next != NULL; end = end->next);
+        quick_sort(head, end);
+#else
         bubble_sort(head);
+#endif
+#if DEBUG_SORT_MSG
+        printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+        for (nodeptr_t current = head; current != NULL; current = current->next) {
+            printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+                current->data.name, current->data.stu_id, 
+                current->data.score[0], current->data.score[1], current->data.score[2],
+                current->data.stu_age, current->data.stu_sex);
+        }
+#endif
+    save_to_file(head, 0);
     } else {
         printf("Information doesn't need to be sorted out. %d", node_num);
     }
-    save_to_file(head, 0);
-
     return EOK;
 }

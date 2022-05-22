@@ -20,19 +20,22 @@
 #define printf_light_blue(fmt, args...) printf("\e[1;36m" fmt "\e[0m", ## args)
 #define printf_white(fmt, args...)      printf("\e[1;37m" fmt "\e[0m", ## args)
 
-#define DEBUG_MSG   1
-#define FILE_NAME   "stu_info.txt"
-#define NUM_ELEMENT 7
-#define TRY_TIMES   3
+#define ANOTHER_WAY     0
+#define DEBUG_READ_MSG  0
+#define DEBUG_SORT_MSG  1
+#define DEBUG_FREE_MSG  0
+#define FILE_NAME       "stu_info.txt"
+#define NUM_ELEMENT     7
+#define TRY_TIMES       3
 
-#define TRUE        1
-#define FALSE       0
-#define EOK         0
-#define EINPUT      -1
-#define EALLOC      -2
-#define EFOPEN      -3
-#define EPASSWD     -4
-#define EMODE       -5
+#define TRUE            1
+#define FALSE           0
+#define EOK             0
+#define EINPUT         -1
+#define EALLOC         -2
+#define EFOPEN         -3
+#define EPASSWD        -4
+#define EMODE          -5
 
 typedef struct {
     char            name[20];
@@ -59,6 +62,8 @@ int view_info(nodeptr_t head, unsigned char *confirm_code);
 int add_info(nodeptr_t head, unsigned char *confirm_code);
 
 nodeptr_t bubble_sort(nodeptr_t head);
+nodeptr_t quick_sort(nodeptr_t head, nodeptr_t end);
+
 int sort_info(nodeptr_t head);
 
 

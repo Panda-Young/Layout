@@ -35,7 +35,7 @@ int main()
         printf("3. Delete info\n");
         printf("4. Modify info\t\t");
         printf("5. Find info\t\t");
-        printf("6. Sort by score\n");
+        printf("6. Sort info\n");
 
         if (scanf("%c", &ui_code)  && ui_code == 10) {
             scanf("%c", &ui_code);
