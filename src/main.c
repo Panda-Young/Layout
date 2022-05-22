@@ -78,7 +78,7 @@ int main()
             case '4':
             case 'm':
             case 'M': {
-                // modify_info();
+                modify_info(head);
                 break;
             }
             case '5':

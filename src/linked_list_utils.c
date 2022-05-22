@@ -302,7 +302,42 @@ int delete_info(nodeptr_t head)
 }
 
 /**
- * @description: find somebody's information
+ * @description: Modify someone's information
+ * @param {nodeptr_t} head
+ * @return {int}
+ */
+int modify_info(nodeptr_t head)
+{
+    unsigned int stu_id;
+    printf("Please input student id you want to modify.\n");
+    scanf("%d", &stu_id);
+
+    nodeptr_t current = head;
+    for (; current != NULL; current = current->next) {
+        if (current->data.stu_id == stu_id) {
+            printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
+            scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
+                    &current->data.score[0], &current->data.score[1], &current->data.score[2],
+                    &current->data.stu_age, &current->data.stu_sex);
+
+            printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+            printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+                current->data.name, current->data.stu_id,
+                current->data.score[0], current->data.score[1], current->data.score[2],
+                current->data.stu_age, current->data.stu_sex);
+            break;
+        }
+    }
+    if (current == NULL) {
+        printf("No information about the student was found\n");
+        return EINPUT;
+    }
+    save_to_file(head, 0);
+    return EOK;
+}
+
+/**
+ * @description: Find someone's information
  * @param {nodeptr_t} head
  * @return {int}
  */
