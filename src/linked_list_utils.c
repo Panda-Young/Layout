@@ -63,6 +63,26 @@ nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
 }
 
 /**
+ * @description: reverse the list
+ * @param {nodeptr_t} head
+ * @return {nodeptr_t}
+ */
+nodeptr_t reverse_list(nodeptr_t head)
+{
+    nodeptr_t Ptemp = NULL;
+    nodeptr_t Pcurr = head;
+    nodeptr_t Pnext;
+    while (Pcurr != NULL) {
+        Pnext = Pcurr->next;
+        Pcurr->next = Ptemp;
+        Ptemp = Pcurr;
+        Pcurr = Pnext;
+    }
+    head = Ptemp;
+    return head;
+}
+
+/**
  * @Descripttion: save node info to file
  * @param {nodeptr_t} tmp
  * @param {int} mode
@@ -101,7 +121,7 @@ int save_to_file(nodeptr_t tmp, bool mode)
 }
 
 /**
- * @Descripttion: 
+ * @Descripttion: creat new file to save infomation
  * @param {nodeptr_t} head
  * @param {unsigned char} *confirm_code
  * @return {int}
@@ -138,8 +158,7 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
 }
 
 /**
- * @description: 
- * @event: 
+ * @description: read information from file
  * @param {nodeptr_t} head
  * @param {bool} *any_info
  * @return {int}
@@ -173,7 +192,7 @@ int read_file(nodeptr_t head)
 }
 
 /**
- * @Descripttion: 
+ * @Descripttion: View all information in the file
  * @param {nodeptr_t} head
  * @param {unsigned char} *confirm_code
  * @return {int}
@@ -207,7 +226,7 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
 }
 
 /**
- * @Descripttion: 
+ * @Descripttion: add new information to the system
  * @param {nodeptr_t} head
  * @return {int}
  */
@@ -245,8 +264,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
 }
 
 /**
- * @description: 
- * @event: 
+ * @description: sort information by students's score
  * @param {nodeptr_t} head
  * @return {int}
  */

@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:  Student Information Management System
  * @version: 0.1.2
  * @Author: PandaYoung
  * @Date: 2022-04-09 03:25:39
@@ -9,6 +9,11 @@
 #include <conio.h>
 #include "../inc/list.h"
 
+/**
+ * @description: UI operation interface
+ * @param {*}
+ * @return {int}
+ */
 int main()
 {
     printf_yellow("Welcome to Use the Student Information Management System!\n");
@@ -79,7 +84,7 @@ int main()
             case '5':
             case 'f':
             case 'F': {
-                // find_info();
+                // find_info(head);
                 break;
             }
             case '6':
