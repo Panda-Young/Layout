@@ -69,6 +69,16 @@ nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
  */
 nodeptr_t reverse_list(nodeptr_t head)
 {
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+#if ANOTHER_WAY // 递归法
+    nodeptr_t Pnext = head->next;
+    nodeptr_t Ptemp = reverse_list(Pnext);
+    Pnext->next = head;
+    head->next = NULL;
+    return Ptemp;
+#else // 迭代法
     nodeptr_t Ptemp = NULL;
     nodeptr_t Pcurr = head;
     nodeptr_t Pnext;
@@ -79,6 +89,7 @@ nodeptr_t reverse_list(nodeptr_t head)
         Pcurr = Pnext;
     }
     head = Ptemp;
+#endif
     return head;
 }
 
@@ -259,6 +270,34 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
         } else {
             break;
         }
+    }
+    return EOK;
+}
+
+/**
+ * @description: find somebody's information
+ * @param {nodeptr_t} head
+ * @return {int}
+ */
+int find_info(nodeptr_t head)
+{
+    unsigned int stu_id;
+    printf("Please input student id you want to find.\n");
+    scanf("%d", &stu_id);
+
+    nodeptr_t current = head;
+    for (; current != NULL; current = current->next) {
+        if (current->data.stu_id == stu_id) {
+            printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+            printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+                current->data.name, current->data.stu_id,
+                current->data.score[0], current->data.score[1], current->data.score[2],
+                current->data.stu_age, current->data.stu_sex);
+            break;
+        }
+    }
+    if (current == NULL) {
+        printf("No information about the student was found\n");
     }
     return EOK;
 }
