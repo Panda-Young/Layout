@@ -336,8 +336,7 @@ int find_info(nodeptr_t head)
  */
 int sort_info(nodeptr_t head)
 {
-    int node_num = read_file(head);
-    if (node_num >= 2) {
+    if (head->next != NULL) {
 #if ANOTHER_WAY
         nodeptr_t end = NULL;
         for(end = head; end->next != NULL; end = end->next);
@@ -354,9 +353,7 @@ int sort_info(nodeptr_t head)
                 current->data.stu_age, current->data.stu_sex);
         }
 #endif
-    save_to_file(head, 0);
-    } else {
-        printf("Information doesn't need to be sorted out. %d", node_num);
+        save_to_file(head, 0);
     }
     return EOK;
 }
