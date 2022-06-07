@@ -182,6 +182,14 @@ int read_file(nodeptr_t head)
         return EFOPEN;
     }
 
+    for (nodeptr_t current = head->next; current != NULL; current = current->next) {
+        if (current != NULL) {
+            free(current);
+        } else {
+            break;
+        }
+    }
+
     int node_num      = 0;
     nodeptr_t current = head;
     while (fscanf(fp, "%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
