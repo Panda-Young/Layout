@@ -67,7 +67,7 @@ int view_info(nodeptr_t head, unsigned char *confirm_code);
 int add_info(nodeptr_t head, unsigned char *confirm_code);
 int modify_info(nodeptr_t head);
 int delete_info(nodeptr_t head);
-int find_info(nodeptr_t head);
+int find_info(nodeptr_t head, unsigned char *confirm_code);
 int sort_info(nodeptr_t head);
 
 #endif

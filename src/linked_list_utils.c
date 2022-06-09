@@ -349,26 +349,47 @@ int modify_info(nodeptr_t head)
  * @param {nodeptr_t} head
  * @return {int}
  */
-int find_info(nodeptr_t head)
+int find_info(nodeptr_t head, unsigned char *confirm_code)
 {
-    unsigned int stu_id;
-    printf("Please input student id you want to find.\n");
-    scanf("%d", &stu_id);
-
-    nodeptr_t current = head;
-    for (; current != NULL; current = current->next) {
-        if (current->data.stu_id == stu_id) {
-            printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
-            printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
-                current->data.name, current->data.stu_id,
-                current->data.score[0], current->data.score[1], current->data.score[2],
-                current->data.stu_age, current->data.stu_sex);
-            break;
+    while (1) {
+        printf("Please input student id you want to find.\n");
+        unsigned int stu_id = 0;
+        scanf("%d", &stu_id);
+        if (stu_id != 0) {
+            nodeptr_t current = head;
+            for (; current != NULL; current = current->next) {
+                if (current->data.stu_id == stu_id) {
+                    printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+                    printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+                        current->data.name, current->data.stu_id,
+                        current->data.score[0], current->data.score[1], current->data.score[2],
+                        current->data.stu_age, current->data.stu_sex);
+                    break;
+                }
+            }
+            if (current == NULL) {
+                printf_red("No information about the student was found!\n");
+            }
+            printf("Whether to continue? 'Y' or 'N'.\n");
+            fflush(stdin);
+            scanf("%c", confirm_code);
+            if (*confirm_code == 'y' || *confirm_code == 'Y') {
+                continue;
+            } else {
+                break;
+            }
+        } else {
+            printf_red("Invalid input! Whether to continue? 'Y' or 'N'.\n");
+            fflush(stdin);
+            scanf("%c", confirm_code);
+            if (*confirm_code == 'y' || *confirm_code == 'Y') {
+                continue;
+            } else {
+                break;
+            }
+            fflush(stdin);
         }
-    }
-    if (current == NULL) {
-        printf("No information about the student was found\n");
-    }
+    } 
     return EOK;
 }
 

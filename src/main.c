@@ -84,7 +84,7 @@ int main()
             case '5':
             case 'f':
             case 'F': {
-                find_info(head);
+                find_info(head, &ui_code);
                 break;
             }
             case '6':
