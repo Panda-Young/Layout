@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 0.1.0
  * @Author: PandaYoung
  * @Date: 2022-04-09 03:28:51
@@ -21,9 +21,8 @@
 #define printf_white(fmt, args...)      printf("\e[1;37m" fmt "\e[0m", ## args)
 
 #define ANOTHER_WAY     0
-#define DEBUG_READ_MSG  0
 #define DEBUG_SORT_MSG  1
-#define DEBUG_FREE_MSG  0
+#define DEBUG_PTR_MSG   0
 #define FILE_NAME       "stu_info.txt"
 #define NUM_ELEMENT     7
 #define TRY_TIMES       3

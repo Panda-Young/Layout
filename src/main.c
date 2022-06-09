@@ -106,7 +106,7 @@ int main()
     nodeptr_t current = head;
     int counter = 1;
     for (current = head; current != NULL; current = current->next) {
-#if DEBUG_FREE_MSG
+#if DEBUG_PTR_MSG
         printf_light_blue("%d\t current ptr %p\n",counter++, current);
 #endif
         free(current);

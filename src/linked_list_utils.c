@@ -219,6 +219,7 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
     }
 
     int node_num = read_file(head);
+    int counter = 1;
 
     if (node_num > 0) {
         printf_green("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
@@ -226,6 +227,9 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
             printf_green("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", current->data.name,
                 current->data.stu_id, current->data.score[0], current->data.score[1],
                 current->data.score[2], current->data.stu_age, current->data.stu_sex);
+#if DEBUG_PTR_MSG
+            printf_light_blue("%d\t current ptr %p\n",counter++, current);
+#endif
         }
     } else if (node_num == 0) {
         printf("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
@@ -385,7 +389,7 @@ int find_info(nodeptr_t head, unsigned char *confirm_code)
             }
             fflush(stdin);
         }
-    } 
+    }
     return EOK;
 }
 
