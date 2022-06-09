@@ -30,6 +30,8 @@ int main()
         printf("There is no Students' infomation here. Press 'Y' to add info or any other key to Exit!\n");
         scanf("%c", &ui_code);
         create_file(head, &ui_code);
+    } else {
+        read_file(head);
     }
 
     while (ui_code != 0) {

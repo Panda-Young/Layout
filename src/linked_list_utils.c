@@ -183,14 +183,10 @@ int read_file(nodeptr_t head)
     }
 
     for (nodeptr_t current = head->next; current != NULL; current = current->next) {
-        if (current != NULL) {
-            free(current);
-        } else {
-            break;
-        }
+        free(current);
     }
 
-    int node_num      = 0;
+    int node_num = 0;
     nodeptr_t current = head;
     while (fscanf(fp, "%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
