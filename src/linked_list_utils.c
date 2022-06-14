@@ -161,6 +161,9 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
             }
         }
         save_to_file(head, 0);
+        for (nodeptr_t temp = head->next; temp != NULL; temp = temp->next) {
+            free(temp);
+        }
     } else {
         printf_yellow("Welcome to Use next time!\n");
         *confirm_code = 0;
@@ -216,6 +219,7 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
 {
     if (head == NULL) {
         printf("malloc failed");
+        return EALLOC;
     }
 
     int node_num = read_file(head);
@@ -253,21 +257,15 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
 {
     if (head == NULL) {
         printf("malloc failed");
+        return EALLOC;
     }
 
-    while (1) {
-        nodeptr_t current = head;
-        printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
-        scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
-                &current->data.score[0], &current->data.score[1], &current->data.score[2],
-                &current->data.stu_age, &current->data.stu_sex);
-        save_to_file(current, 1);
+    nodeptr_t current = head;
+    for (; current->next != NULL; current = current->next);
+    *confirm_code = 'Y';
 
-        printf("Whether continue to add info? Press 'Y' or any other key to End!\n");
-        if (scanf("%c", confirm_code) && *confirm_code == 10) {
-            scanf("%c", confirm_code);
-        }
-        if (*confirm_code == 'y' || *confirm_code == 'Y') {
+    while (1) {
+            if (*confirm_code == 'y' || *confirm_code == 'Y') {
 #if ANOTHER_WAY
             head = add_beginnode(head);
 #elif ANOTHER_WAY2
@@ -278,7 +276,18 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
         } else {
             break;
         }
+
+        printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
+        scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
+                &current->data.score[0], &current->data.score[1], &current->data.score[2],
+                &current->data.stu_age, &current->data.stu_sex);
+
+        printf("Whether continue to add info? Press 'Y' or any other key to End!\n");
+        fflush(stdin);
+        scanf("%c", confirm_code);
     }
+    save_to_file(head, 0);
+
     return EOK;
 }
 
