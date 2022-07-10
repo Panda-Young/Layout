@@ -4,7 +4,7 @@
  * @Author: PandaYoung
  * @Date: 2022-05-08 11:11:11
  */
-#include "../inc/list.h"
+#include "list.h"
 #include <string.h>
 
 void swap_node(nodeptr_t tmp_a, nodeptr_t tmp_b)

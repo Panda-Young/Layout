@@ -7,7 +7,7 @@
 
 #include <unistd.h>
 #include <conio.h>
-#include "../inc/list.h"
+#include "list.h"
 
 /**
  * @description: UI operation interface

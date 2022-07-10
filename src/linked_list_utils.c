@@ -4,7 +4,7 @@
  * @Author: PandaYoung
  * @Date: 2022-04-10 02:24:32
  */
-#include "../inc/list.h"
+#include "list.h"
 
 nodeptr_t add_endnode(nodeptr_t end)
 {

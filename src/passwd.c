@@ -6,7 +6,7 @@
  */
 #include <string.h>
 #include <conio.h>
-#include "../inc/list.h"
+#include "list.h"
 
 void HiddenInput(char *passwd)
 {
