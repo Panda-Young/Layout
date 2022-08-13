@@ -1,9 +1,11 @@
 /*
- * @Descripttion:
+ * @Description: The specific inplementation of various function of the link list.
  * @version: 0.1.0
- * @Author: PandaYoung
+ * @Author: Panda-Young
  * @Date: 2022-04-10 02:24:32
+ * Copyright (c) 2022 by Panda-Young, All Rights Reserved.
  */
+
 #include "list.h"
 
 nodeptr_t add_endnode(nodeptr_t end)
@@ -50,11 +52,11 @@ nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
     }
 
     nodeptr_t tmp = NULL;
-#if ANOTHER_WAY // 任意节点前
+#if ANOTHER_WAY // before any node
     for (tmp = head; tmp->next != current; tmp = tmp->next);
     tmp->next = newnode;
     newnode->next = current;
-#else // 任意节点后
+#else // after any node
     tmp = current->next;
     newnode->next = tmp;
     current->next = newnode;
@@ -72,13 +74,13 @@ nodeptr_t reverse_list(nodeptr_t head)
     if (head == NULL || head->next == NULL) {
         return head;
     }
-#if ANOTHER_WAY // 递归法
+#if ANOTHER_WAY // Recursion
     nodeptr_t Pnext = head->next;
     nodeptr_t Ptemp = reverse_list(Pnext);
     Pnext->next = head;
     head->next = NULL;
     return Ptemp;
-#else // 迭代法
+#else // Iteration
     nodeptr_t Ptemp = NULL;
     nodeptr_t Pcurr = head;
     nodeptr_t Pnext;
@@ -97,8 +99,9 @@ nodeptr_t reverse_list(nodeptr_t head)
  * @Descripttion: save node info to file
  * @param {nodeptr_t} tmp
  * @param {int} mode
- *              0   将当前至结尾所有节点信息写入清空的文件，一般用于头节点
- *              1   将当前节点信息追加至文件末尾
+ *              0   Write information about all nodes from the current to end to a cleared file,
+ *      usually used for the header node.
+ *              1   Append the current node information to the end of file.
  * @return {int}
  */
 int save_to_file(nodeptr_t tmp, bool mode)
@@ -249,8 +252,9 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
 }
 
 /**
- * @Descripttion: add new information to the system
+ * @description: Delete someone's information
  * @param {nodeptr_t} head
+ * @param {unsigned char} *confirm_code
  * @return {int}
  */
 int add_info(nodeptr_t head, unsigned char *confirm_code)
@@ -403,7 +407,7 @@ int find_info(nodeptr_t head, unsigned char *confirm_code)
 }
 
 /**
- * @description: sort information by students's score
+ * @description: sort information by students' score
  * @param {nodeptr_t} head
  * @return {int}
  */

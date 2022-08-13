@@ -1,13 +1,20 @@
 /*
- * @Descripttion:
+ * @Description: Secure password input and verification.
  * @version: 0.1.0
- * @Author: PandaYoung
+ * @Author: Panda-Young
  * @Date: 2022-04-10 01:51:03
+ * Copyright (c) 2022 by Panda-Young, All Rights Reserved.
  */
+
 #include <string.h>
 #include <conio.h>
 #include "list.h"
 
+/**
+ * @description: Hide plaintext input
+ * @param {char} *passwd
+ * @return {*}
+ */
 void HiddenInput(char *passwd)
 {
     char ch = 0;
@@ -34,6 +41,10 @@ void HiddenInput(char *passwd)
     printf("\n");
 }
 
+/**
+ * @description: Verify password
+ * @return {*}
+ */
 int verify_passwd()
 {
     char passwd[20];

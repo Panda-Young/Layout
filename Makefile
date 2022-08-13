@@ -1,4 +1,10 @@
-#sample Makefile
+#
+# Description: Simple Makefile.
+# version: 0.1.0
+# Author: Panda-Young
+# Date: 2022-08-14 01:06:24
+# Copyright (c) 2022 by Panda-Young, All Rights Reserved.
+#
 
 SRC = $(wildcard src/*.c)
 OBJ = $(patsubst %.c, %.o, $(SRC))

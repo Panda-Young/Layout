@@ -1,9 +1,11 @@
 /*
- * @Descripttion:
+ * @Description: Header file
  * @version: 0.1.0
- * @Author: PandaYoung
+ * @Author: Panda-Young
  * @Date: 2022-04-09 03:28:51
+ * @Copyright (c) 2022 by Panda-Young, All Rights Reserved.
  */
+
 #ifndef __LIST_H
 #define __LIST_H
 
