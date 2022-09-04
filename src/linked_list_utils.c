@@ -280,9 +280,12 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
     }
 
         MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
-        scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
+        if (scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
                 &current->data.score[0], &current->data.score[1], &current->data.score[2],
-                &current->data.stu_age, &current->data.stu_sex);
+                &current->data.stu_age, &current->data.stu_sex) != NUM_ELEMENT) {
+            MSG_ERR("Please check student information.\n");
+            return EINPUT;
+        }
 
         MSG_PROMPT("Whether continue to add info? Press 'Y' or any other key to End!\n");
         fflush(stdin);
@@ -315,6 +318,11 @@ int delete_info(nodeptr_t head)
             current = NULL;
             break;
         }
+    }
+    if (current == NULL) {
+        MSG_ERR("No information about the student was found\n");
+        fflush(stdin);
+        return EINPUT;
     }
     save_to_file(head, 0);
 
@@ -350,7 +358,7 @@ int modify_info(nodeptr_t head)
         }
     }
     if (current == NULL) {
-        MSG_ERR("No information about the student was found\n");
+        MSG_ERR("No information about the student was found!\n");
         fflush(stdin);
         return EINPUT;
     }
