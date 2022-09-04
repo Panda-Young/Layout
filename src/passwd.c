@@ -30,15 +30,15 @@ void HiddenInput(char *passwd)
                 continue; // 密码仅由大小写字母和数字组成
             }
             passwd[len] = ch;
-            printf("*");
+            MSG_INFO("*");
             len++;
         } else {
-            printf("\b \b");
+            MSG_INFO("\b \b");
             len--;
         }
     }
     passwd[len] = '\0';
-    printf("\n");
+    MSG_INFO("\n");
 }
 
 /**
@@ -49,7 +49,7 @@ int verify_passwd()
 {
     char passwd[20];
     int try_num = 0;
-    printf("Please input password. %d/%d\n", try_num + 1, TRY_TIMES);
+    MSG_PROMPT("Please input password. %d/%d\n", try_num + 1, TRY_TIMES);
     while (try_num != TRY_TIMES) {
         try_num++;
         HiddenInput(passwd);
@@ -57,9 +57,9 @@ int verify_passwd()
             return EOK;
         }
         if (try_num != TRY_TIMES) {
-            printf_red("Mismatch! Please reinput password. %d/%d\n", try_num + 1, TRY_TIMES);
+            MSG_ERR("Mismatch! Please reinput password. %d/%d\n", try_num + 1, TRY_TIMES);
         } else {
-            printf_red("Mismatch! The number of attempts exceeds the limit. Exit!\n");
+            MSG_ERR("Mismatch! The number of attempts exceeds the limit. Exit!\n");
         }
     }
     return EPASSWD;

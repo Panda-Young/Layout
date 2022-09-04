@@ -11,7 +11,7 @@
 nodeptr_t add_endnode(nodeptr_t end)
 {
     if (end == NULL) {
-        printf("end node is null.\n");
+        MSG_INFO("end node is null.\n");
         return NULL;
     }
     nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
@@ -27,7 +27,7 @@ nodeptr_t add_endnode(nodeptr_t end)
 nodeptr_t add_beginnode(nodeptr_t head)
 {
     if (head == NULL) {
-        printf("head node is null.\n");
+        MSG_INFO("head node is null.\n");
         return NULL;
     }
     nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
@@ -42,7 +42,7 @@ nodeptr_t add_beginnode(nodeptr_t head)
 nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
 {
     if (head == NULL || current == NULL) {
-        printf("head or current node is null.\n");
+        MSG_INFO("head or current node is null.\n");
         return NULL;
     }
     nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
@@ -148,12 +148,12 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
     if(*confirm_code == 'y' || *confirm_code == 'Y') {
         nodeptr_t current = head;
         while (1) {
-            printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
+            MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
             scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
                     &current->data.stu_age, &current->data.stu_sex);
 
-            printf("Whether continue to add info? Press 'Y' or any other key to End!\n");
+            MSG_PROMPT("Whether continue to add info? Press 'Y' or any other key to End!\n");
             if (scanf("%c", confirm_code) && *confirm_code == 10) {
                 scanf("%c", confirm_code);
             }
@@ -168,7 +168,7 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
             free(temp);
         }
     } else {
-        printf_yellow("Welcome to Use next time!\n");
+        MSG_PROMPT("Welcome to Use next time!\n");
         *confirm_code = 0;
     }
     return EOK;
@@ -203,7 +203,7 @@ int read_file(nodeptr_t head)
         } else {
             fseek(fp, -1, SEEK_CUR);
             if ((current = add_endnode(current)) ==  NULL) {
-                printf ("add new link node error\n");
+                MSG_ERR("add new link node error\n");
                 return EALLOC;
             }
         }
@@ -221,7 +221,7 @@ int read_file(nodeptr_t head)
 int view_info(nodeptr_t head, unsigned char *confirm_code)
 {
     if (head == NULL) {
-        printf("malloc failed");
+        MSG_ERR("malloc failed");
         return EALLOC;
     }
 
@@ -229,23 +229,21 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
     int counter = 1;
 
     if (node_num > 0) {
-        printf_green("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+        MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            printf_green("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", current->data.name,
+            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", current->data.name,
                 current->data.stu_id, current->data.score[0], current->data.score[1],
                 current->data.score[2], current->data.stu_age, current->data.stu_sex);
-#if DEBUG_PTR_MSG
-            printf_light_blue("%d\t current ptr %p\n",counter++, current);
-#endif
+            MSG_DBG("%d\t current ptr %p\n",counter++, current);
         }
     } else if (node_num == 0) {
-        printf("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
+        MSG_INFO("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
         if (scanf("%c", confirm_code) && *confirm_code == 10) {
             scanf("%c", confirm_code);
         }
         create_file(head, confirm_code);
     } else {
-        printf("read file error, result %d", node_num);
+        MSG_ERR("read file error, result %d", node_num);
     }
 
     return EOK;
@@ -260,7 +258,7 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
 int add_info(nodeptr_t head, unsigned char *confirm_code)
 {
     if (head == NULL) {
-        printf("malloc failed");
+        MSG_ERR("malloc failed");
         return EALLOC;
     }
 
@@ -269,7 +267,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
     *confirm_code = 'Y';
 
     while (1) {
-            if (*confirm_code == 'y' || *confirm_code == 'Y') {
+        if (*confirm_code == 'y' || *confirm_code == 'Y') {
 #if ANOTHER_WAY
             head = add_beginnode(head);
 #elif ANOTHER_WAY2
@@ -277,19 +275,20 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
 #else
             current = add_endnode(current);
 #endif
-        } else {
-            break;
-        }
+    } else {
+        break;
+    }
 
-        printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
+        MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
         scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
                 &current->data.score[0], &current->data.score[1], &current->data.score[2],
                 &current->data.stu_age, &current->data.stu_sex);
 
-        printf("Whether continue to add info? Press 'Y' or any other key to End!\n");
+        MSG_PROMPT("Whether continue to add info? Press 'Y' or any other key to End!\n");
         fflush(stdin);
         scanf("%c", confirm_code);
     }
+    MSG_DBG("head ptr %p\n",head);
     save_to_file(head, 0);
 
     return EOK;
@@ -303,7 +302,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
 int delete_info(nodeptr_t head)
 {
     unsigned int stu_id;
-    printf("Please input student id you want to delete.\n");
+    MSG_PROMPT("Please input student id you want to delete.\n");
     scanf("%d", &stu_id);
 
     nodeptr_t current = head;
@@ -330,19 +329,20 @@ int delete_info(nodeptr_t head)
 int modify_info(nodeptr_t head)
 {
     unsigned int stu_id;
-    printf("Please input student id you want to modify.\n");
+    MSG_PROMPT("Please input student id you want to modify.\n");
+    fflush(stdin);
     scanf("%d", &stu_id);
 
     nodeptr_t current = head;
     for (; current != NULL; current = current->next) {
         if (current->data.stu_id == stu_id) {
-            printf("Input Name, ID, Ch & Math & Eng scor, Age & Sex in proper order.\n");
+            MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
             scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
                     &current->data.stu_age, &current->data.stu_sex);
 
-            printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
-            printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+            MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
                 current->data.name, current->data.stu_id,
                 current->data.score[0], current->data.score[1], current->data.score[2],
                 current->data.stu_age, current->data.stu_sex);
@@ -350,7 +350,8 @@ int modify_info(nodeptr_t head)
         }
     }
     if (current == NULL) {
-        printf("No information about the student was found\n");
+        MSG_ERR("No information about the student was found\n");
+        fflush(stdin);
         return EINPUT;
     }
     save_to_file(head, 0);
@@ -365,15 +366,15 @@ int modify_info(nodeptr_t head)
 int find_info(nodeptr_t head, unsigned char *confirm_code)
 {
     while (1) {
-        printf("Please input student id you want to find.\n");
+        MSG_PROMPT("Please input student id you want to find.\n");
         unsigned int stu_id = 0;
         scanf("%d", &stu_id);
         if (stu_id != 0) {
             nodeptr_t current = head;
             for (; current != NULL; current = current->next) {
                 if (current->data.stu_id == stu_id) {
-                    printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
-                    printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+                    MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+                    MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
                         current->data.name, current->data.stu_id,
                         current->data.score[0], current->data.score[1], current->data.score[2],
                         current->data.stu_age, current->data.stu_sex);
@@ -381,9 +382,9 @@ int find_info(nodeptr_t head, unsigned char *confirm_code)
                 }
             }
             if (current == NULL) {
-                printf_red("No information about the student was found!\n");
+                MSG_ERR("No information about the student was found!\n");
             }
-            printf("Whether to continue? 'Y' or 'N'.\n");
+            MSG_PROMPT("Whether to continue? 'Y' or 'N'.\n");
             fflush(stdin);
             scanf("%c", confirm_code);
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
@@ -392,7 +393,7 @@ int find_info(nodeptr_t head, unsigned char *confirm_code)
                 break;
             }
         } else {
-            printf_red("Invalid input! Whether to continue? 'Y' or 'N'.\n");
+            MSG_ERR("Invalid input! Whether to continue? 'Y' or 'N'.\n");
             fflush(stdin);
             scanf("%c", confirm_code);
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
@@ -422,9 +423,9 @@ int sort_info(nodeptr_t head)
         bubble_sort(head);
 #endif
 #if DEBUG_SORT_MSG
-        printf_light_blue("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+        MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            printf_light_blue("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
                 current->data.name, current->data.stu_id,
                 current->data.score[0], current->data.score[1], current->data.score[2],
                 current->data.stu_age, current->data.stu_sex);
