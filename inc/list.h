@@ -12,19 +12,20 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
-#define printf_grey(fmt, args...)       printf("\e[1;30m" fmt "\e[0m", ## args)
+#define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args)
 #define MSG_INFO(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args)
-#define MSG_PROMPT(fmt, args...)     printf("\e[1;33m" fmt "\e[0m", ## args)
+#define MSG_PROMPT(fmt, args...)    printf("\e[1;33m" fmt "\e[0m", ## args)
 #if _DBG_MSG_ENABLE
 #define MSG_DBG(fmt, args...)       printf("\e[1;34m" fmt "\e[0m", ## args)
 #else
 #define MSG_DBG(fmt, args...)
 #endif
-#define MSG_ERR(fmt, args...)        printf("\e[1;31m" fmt "\e[0m", ## args)
+#define MSG_ERR(fmt, args...)       printf("\e[1;31m" fmt "\e[0m", ## args)
 #define MSG_FATAL(fmt, args...)     printf("\e[1;35m" fmt "\e[0m", ## args)
-#define MSG_DATA(fmt, args...) printf("\e[1;36m" fmt "\e[0m", ## args)
-#define printf_white(fmt, args...)      printf("\e[1;37m" fmt "\e[0m", ## args)
+#define MSG_DATA(fmt, args...)      printf("\e[1;36m" fmt "\e[0m", ## args)
+#define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args)
 
 #define ANOTHER_WAY     0
 #define DEBUG_SORT_MSG  1
