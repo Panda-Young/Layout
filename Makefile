@@ -11,9 +11,9 @@ OBJ = $(patsubst %.c, %.o, $(SRC))
 CPPFLAGS = "-I./inc"
 
 all : main $(OBJ)
-	mkdir -p build/out
-	mv $(OBJ) build
-	mv *.exe build/out
+	mkdir -p out/build
+	mv $(OBJ) out/build/
+	mv *.exe out
 
 main : $(OBJ)
 	gcc $(OBJ) -o main
@@ -24,7 +24,7 @@ main : $(OBJ)
 .PHONY:clean debug
 
 clean:
-	-rm -rf build
+	-rm -rf out
 	clear
 
 debug:
