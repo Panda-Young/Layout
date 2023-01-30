@@ -33,6 +33,8 @@
 #define FILE_NAME       "stu_info.txt"
 #define NUM_ELEMENT     7
 #define TRY_TIMES       3
+#define ASCII_NEW_LINE  10
+#define ASCII_ENTER     13
 
 #define TRUE            1
 #define FALSE           0
