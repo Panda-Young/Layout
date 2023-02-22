@@ -26,7 +26,7 @@ void HiddenInput(char *passwd)
         }
 
         if(ch != '\b') { // 回车删除字符
-            if(!((ch<='Z'&&ch>='A')||(ch<='z'&&ch>='a')||(ch<='9'&&ch>='0'))) {
+            if(!((ch <= 'Z' && ch >= 'A') || (ch <= 'z' && ch >= 'a') || (ch <= '9' && ch >= '0'))) {
                 continue; // 密码仅由大小写字母和数字组成
             }
             passwd[len] = ch;
@@ -43,7 +43,7 @@ void HiddenInput(char *passwd)
 
 /**
  * @description: Verify password
- * @return {*}
+ * @return {int}
  */
 int verify_passwd()
 {
