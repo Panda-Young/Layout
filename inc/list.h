@@ -19,7 +19,7 @@
 #include <conio.h>
 
 
-#define _DBG_MSG_ENABLE 1
+#define _DBG_MSG_ENABLE 0
 
 #define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args)
 #define MSG_INFO(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args)

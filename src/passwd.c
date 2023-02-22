@@ -24,13 +24,9 @@ void HiddenInput(char *passwd)
     int len = 0;
     while(ch = getch())
     {
-        if(len >= 20 || ch == 13) { // 密码输入过长或enter结束输入
-            break;
-        }
-
-        if(ch != '\b') { // 回车删除字符
+        if(ch != '\b') { // backspace
             if(!((ch <= 'Z' && ch >= 'A') || (ch <= 'z' && ch >= 'a') || (ch <= '9' && ch >= '0'))) {
-                continue; // 密码仅由大小写字母和数字组成
+                continue;
             }
             passwd[len] = ch;
             MSG_INFO("*");
@@ -81,7 +77,7 @@ int decrypt(char *key_file, char *pw_str)
     fread(pw_str, pw_len, 1, KEY);
     fclose(KEY);
     KEY = NULL;
-    MSG_DBG("PW:%s", pw_str);
+    MSG_DBG("PW:%s\n", pw_str);
     return EOK;
 }
 
