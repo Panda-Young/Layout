@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "patchfile": "c",
+        "conio.h": "c",
+        "unistd.h": "c"
+    }
+}
