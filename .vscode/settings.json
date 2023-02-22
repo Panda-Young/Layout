@@ -2,6 +2,10 @@
     "files.associations": {
         "patchfile": "c",
         "conio.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "list.h": "c",
+        "stdint.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c"
     }
 }

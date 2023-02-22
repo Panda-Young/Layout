@@ -6,8 +6,6 @@
  * Copyright (c) 2022 by Panda-Young, All Rights Reserved.
  */
 
-#include <unistd.h>
-#include <conio.h>
 #include "list.h"
 
 /**
@@ -43,6 +41,7 @@ int main(int argc, char *argv[])
     unsigned char ui_code = ASCII_ENTER;
 
     if (access(FILE_NAME, F_OK)) {
+        set_secure_password();
         MSG_PROMPT("There is no Students' infomation here. Press 'Y' to add info or any other key to Exit!\n");
         scanf("%c", &ui_code);
         create_file(head, &ui_code);
@@ -119,9 +118,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    nodeptr_t current = head;
     int counter = 1;
-    for (current = head; current != NULL; current = current->next) {
+    for (nodeptr_t current = head; current != NULL; current = current->next) {
         MSG_DBG("%d\t current ptr %p\n",counter++, current);
         free(current);
     }

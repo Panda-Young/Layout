@@ -13,6 +13,13 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <unistd.h>
+#include <errno.h>
+#include <conio.h>
+
+
+#define _DBG_MSG_ENABLE 1
 
 #define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args)
 #define MSG_INFO(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args)
@@ -27,10 +34,11 @@
 #define MSG_DATA(fmt, args...)      printf("\e[1;36m" fmt "\e[0m", ## args)
 #define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args)
 
+#define FILE_NAME       "stu_info.txt"
+
 #define ANOTHER_WAY     0
 #define DEBUG_SORT_MSG  1
 #define DEBUG_PTR_MSG   0
-#define FILE_NAME       "stu_info.txt"
 #define NUM_ELEMENT     7
 #define TRY_TIMES       3
 #define ASCII_NEW_LINE  10
@@ -59,12 +67,12 @@ typedef struct node {
 }node_t, *nodeptr_t;
 
 int verify_passwd();
+int set_secure_password();
 
 nodeptr_t add_endnode(nodeptr_t end);
 nodeptr_t add_beginnode(nodeptr_t head);
 nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current);
 nodeptr_t reverse_list(nodeptr_t head);
-
 nodeptr_t bubble_sort(nodeptr_t head);
 nodeptr_t quick_sort(nodeptr_t head, nodeptr_t end);
 

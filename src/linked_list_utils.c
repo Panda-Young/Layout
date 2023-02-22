@@ -11,7 +11,7 @@
 nodeptr_t add_endnode(nodeptr_t end)
 {
     if (end == NULL) {
-        MSG_INFO("end node is null.\n");
+        MSG_INFO("end node is NULL.\n");
         return NULL;
     }
     nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
@@ -27,7 +27,7 @@ nodeptr_t add_endnode(nodeptr_t end)
 nodeptr_t add_beginnode(nodeptr_t head)
 {
     if (head == NULL) {
-        MSG_INFO("head node is null.\n");
+        MSG_INFO("head node is NULL.\n");
         return NULL;
     }
     nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
@@ -42,7 +42,7 @@ nodeptr_t add_beginnode(nodeptr_t head)
 nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
 {
     if (head == NULL || current == NULL) {
-        MSG_INFO("head or current node is null.\n");
+        MSG_INFO("head or current node is NULL.\n");
         return NULL;
     }
     nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
