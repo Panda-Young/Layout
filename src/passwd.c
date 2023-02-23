@@ -8,7 +8,7 @@
 
 #include "list.h"
 
-#define MAX_INPUT_LEN 50
+#define MAX_INPUT_LEN 30
 #define MAX_PW_LEN 15
 #define MIN_PW_LEN 8
 #define KEY_FILE "key"
