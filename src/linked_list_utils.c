@@ -149,7 +149,7 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
         nodeptr_t current = head;
         while (1) {
             MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
-            scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
+            scanf("%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
                     &current->data.stu_age, &current->data.stu_sex);
 
@@ -194,7 +194,7 @@ int read_file(nodeptr_t head)
 
     int node_num = 0;
     nodeptr_t current = head;
-    while (fscanf(fp, "%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
+    while (fscanf(fp, "%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
             &current->data.stu_age, &current->data.stu_sex) == NUM_ELEMENT) {
         node_num++;
@@ -280,7 +280,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
     }
 
         MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
-        if (scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
+        if (scanf("%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
                 &current->data.score[0], &current->data.score[1], &current->data.score[2],
                 &current->data.stu_age, &current->data.stu_sex) != NUM_ELEMENT) {
             MSG_ERR("Please check student information.\n");
@@ -345,7 +345,7 @@ int modify_info(nodeptr_t head)
     for (; current != NULL; current = current->next) {
         if (current->data.stu_id == stu_id) {
             MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
-            scanf("%s %d %d %d %d %d %d", current->data.name, &current->data.stu_id,
+            scanf("%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
                     &current->data.stu_age, &current->data.stu_sex);
 

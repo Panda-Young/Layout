@@ -154,6 +154,6 @@ int set_secure_password()
         }
     }
 
-    MSG_INFO("pw_str:%s\nlength: %d\n", pw_str, strlen(pw_str));
+    MSG_INFO("pw_str:%s\nlength: %ld\n", pw_str, strlen(pw_str));
     return EOK;
 }

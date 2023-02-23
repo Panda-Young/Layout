@@ -6,6 +6,10 @@
         "list.h": "c",
         "stdint.h": "c",
         "stdlib.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "*.tcc": "c",
+        "cstdio": "c",
+        "string_view": "c",
+        "functional": "c"
     }
 }
