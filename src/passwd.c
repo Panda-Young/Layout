@@ -24,6 +24,9 @@ void HiddenInput(char *passwd)
     int len = 0;
     while(ch = getch())
     {
+        if (ch == 13) { // end with press [Enter]
+            break;
+        }
         if(ch != '\b') { // backspace
             if(!((ch <= 'Z' && ch >= 'A') || (ch <= 'z' && ch >= 'a') || (ch <= '9' && ch >= '0'))) {
                 continue;
@@ -87,7 +90,7 @@ int decrypt(char *key_file, char *pw_str)
  */
 int verify_passwd()
 {
-    char passwd[MAX_INPUT_LEN], pw_str[MAX_INPUT_LEN];
+    char passwd[MAX_INPUT_LEN] = {0}, pw_str[MAX_INPUT_LEN] = {0};
     if (decrypt(KEY_FILE, pw_str) != EOK) {
         MSG_ERR("Not get saved password.\n");
         return EFOPEN;
@@ -111,7 +114,7 @@ int verify_passwd()
 
 int set_secure_password()
 {
-    int8_t pw_str[MAX_INPUT_LEN];
+    int8_t pw_str[MAX_INPUT_LEN] = {0};
     uint16_t uppercase = 0, lowercase = 0, numbers = 0, others_ch = 0;
 
     MSG_PROMPT("Please set password of 8 to 15 characters, including uppercase and lowercase letters and numbers.\n");
