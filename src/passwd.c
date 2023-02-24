@@ -106,7 +106,7 @@ int verify_passwd()
         if (try_num != TRY_TIMES) {
             MSG_ERR("Mismatch! Please reinput password. %d/%d\n", try_num + 1, TRY_TIMES);
         } else {
-            MSG_ERR("Mismatch! The number of attempts exceeds the limit. Exit!\n");
+            MSG_ERR("3 incorrect password attempts. Exit!\n");
         }
     }
     return EPASSWD;
@@ -114,19 +114,20 @@ int verify_passwd()
 
 int set_secure_password()
 {
-    int8_t pw_str[MAX_INPUT_LEN] = {0};
+    int8_t pw_str[MAX_INPUT_LEN] = {0}, pw_str2[MAX_INPUT_LEN] = {0};
     uint16_t uppercase = 0, lowercase = 0, numbers = 0, others_ch = 0;
 
     MSG_PROMPT("Please set password of 8 to 15 characters, including uppercase and lowercase letters and numbers.\n");
 
     while (1) {
         memset(pw_str, 0, MAX_INPUT_LEN);
+        memset(pw_str2, 0, MAX_INPUT_LEN);
         uppercase = 0;
         lowercase = 0;
         numbers = 0;
         others_ch = 0;
 
-        gets(pw_str);
+        HiddenInput(pw_str);
 
         for (int i = 0; i < strlen(pw_str); i ++) {
             if (pw_str[i] >= 'a' && pw_str[i] <= 'z') {
@@ -143,8 +144,15 @@ int set_secure_password()
         if (lowercase > 0 && uppercase > 0 && numbers > 0 && others_ch == 0
             && strlen(pw_str) >= MIN_PW_LEN && strlen(pw_str) <= MAX_PW_LEN)
         {
-            encrypt(KEY_FILE, pw_str);
-            break;
+            MSG_PROMPT("Please enter again to confirm password:\n");
+            HiddenInput(pw_str2);
+            if (strcmp(pw_str, pw_str2) == 0) {
+                encrypt(KEY_FILE, pw_str);
+                break;
+            } else {
+                MSG_PROMPT("The passwords entered twice are different! Reinput:\n");
+                continue;
+            }
         } else if (strlen(pw_str) < MIN_PW_LEN || strlen(pw_str) > MAX_PW_LEN) {
             MSG_ERR("Password length needs to be set from 8 to 15! Reinput:\n");
             continue;
@@ -157,6 +165,6 @@ int set_secure_password()
         }
     }
 
-    MSG_INFO("pw_str:%s\nlength: %ld\n", pw_str, strlen(pw_str));
+    MSG_DBG("entered pw:%s\nlength: %ld\n", pw_str, strlen(pw_str));
     return EOK;
 }

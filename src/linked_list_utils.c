@@ -430,15 +430,14 @@ int sort_info(nodeptr_t head)
 #else
         bubble_sort(head);
 #endif
-#if DEBUG_SORT_MSG
-        MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+
+        MSG_DBG("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+            MSG_DBG("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
                 current->data.name, current->data.stu_id,
                 current->data.score[0], current->data.score[1], current->data.score[2],
                 current->data.stu_age, current->data.stu_sex);
         }
-#endif
         save_to_file(head, 0);
     }
     return EOK;

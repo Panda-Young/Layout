@@ -18,25 +18,23 @@
 #include <errno.h>
 #include <conio.h>
 
-#define _DBG_MSG_ENABLE 0
-#define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args) // grey
-#define MSG_INFO(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args) // green
-#define MSG_PROMPT(fmt, args...)    printf("\e[1;33m" fmt "\e[0m", ## args) // yellow
-#if _DBG_MSG_ENABLE
-#define MSG_DBG(fmt, args...)       printf("\e[1;34m" fmt "\e[0m", ## args) // blue
+#define DBG_MSG_ENABLE              0
+
+#define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args)
+#define MSG_INFO(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args)
+#define MSG_PROMPT(fmt, args...)    printf("\e[1;33m" fmt "\e[0m", ## args)
+#if     DBG_MSG_ENABLE
+#define MSG_DBG(fmt, args...)       printf("\e[1;34m" fmt "\e[0m", ## args)
 #else
 #define MSG_DBG(fmt, args...)
-#endif
-#define MSG_ERR(fmt, args...)       printf("\e[1;31m" fmt "\e[0m", ## args) // red
-#define MSG_FATAL(fmt, args...)     printf("\e[1;35m" fmt "\e[0m", ## args) // purple
-#define MSG_DATA(fmt, args...)      printf("\e[1;36m" fmt "\e[0m", ## args) // light blue
-#define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args) // white
+#endif#define MSG_ERR(fmt, args...)       printf("\e[1;31m" fmt "\e[0m", ## args)
+#define MSG_FATAL(fmt, args...)     printf("\e[1;35m" fmt "\e[0m", ## args)
+#define MSG_DATA(fmt, args...)      printf("\e[1;36m" fmt "\e[0m", ## args)
+#define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args)
 
 #define FILE_NAME       "stu_info.txt"
 
 #define ANOTHER_WAY     0
-#define DEBUG_SORT_MSG  1
-#define DEBUG_PTR_MSG   0
 #define NUM_ELEMENT     7
 #define TRY_TIMES       3
 #define ASCII_NEW_LINE  10

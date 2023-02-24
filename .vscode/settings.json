@@ -10,6 +10,7 @@
         "*.tcc": "c",
         "cstdio": "c",
         "string_view": "c",
-        "functional": "c"
+        "functional": "c",
+        "errno.h": "c"
     }
 }
