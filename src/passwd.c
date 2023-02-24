@@ -118,6 +118,10 @@ int verify_passwd()
     return EPASSWD;
 }
 
+/**
+ * @description: Set an secure password of 8 to 15 characters, including uppercase and lowercase letters and numbers.
+ * @return {*}
+ */
 int set_secure_password()
 {
     int8_t pw_str[MAX_INPUT_LEN] = {0}, pw_str2[MAX_INPUT_LEN] = {0};
