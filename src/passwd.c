@@ -90,9 +90,15 @@ int decrypt(char *key_file, char *pw_str)
  */
 int verify_passwd()
 {
+    if (access(KEY_FILE, F_OK) != 0) {
+        MSG_ERR("There is no saved password.\n");
+        set_secure_password();
+        return EOK;
+    }
+
     char passwd[MAX_INPUT_LEN] = {0}, pw_str[MAX_INPUT_LEN] = {0};
     if (decrypt(KEY_FILE, pw_str) != EOK) {
-        MSG_ERR("Not get saved password.\n");
+        MSG_ERR("Can't get saved password.\n");
         return EFOPEN;
     }
     int try_num = 0;
