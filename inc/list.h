@@ -27,7 +27,8 @@
 #define MSG_DBG(fmt, args...)       printf("\e[1;34m" fmt "\e[0m", ## args)
 #else
 #define MSG_DBG(fmt, args...)
-#endif#define MSG_ERR(fmt, args...)       printf("\e[1;31m" fmt "\e[0m", ## args)
+#endif
+#define MSG_ERR(fmt, args...)       printf("\e[1;31m" fmt "\e[0m", ## args)
 #define MSG_FATAL(fmt, args...)     printf("\e[1;35m" fmt "\e[0m", ## args)
 #define MSG_DATA(fmt, args...)      printf("\e[1;36m" fmt "\e[0m", ## args)
 #define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args)

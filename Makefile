@@ -24,6 +24,7 @@ main : $(OBJ)
 .PHONY:clean debug
 
 clean:
+	-rm $(OBJ)
 	-rm -rf out
 	clear
 
