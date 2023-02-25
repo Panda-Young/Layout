@@ -8,6 +8,35 @@
 
 #include "list.h"
 
+/**
+ * @description: print the current node student's information
+ * @param {nodeptr_t} current
+ * @return {*}
+ */
+void current_node_info(nodeptr_t current, log_level_t level)
+{
+    if (current != NULL) {
+        switch (level) {
+            case LOG_LEVEL_DEBUG:
+                MSG_DBG("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
+                    current->data.name, current->data.stu_id,
+                    current->data.score[0], current->data.score[1], current->data.score[2],
+                    current->data.stu_age, current->data.stu_sex? "boy" : "girl");
+                break;
+            case LOG_LEVEL_DATA:
+                MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
+                    current->data.name, current->data.stu_id,
+                    current->data.score[0], current->data.score[1], current->data.score[2],
+                    current->data.stu_age, current->data.stu_sex? "boy" : "girl");
+                break;
+            default:
+                break;
+        }
+    } else {
+        MSG_ERR("The current pointer is NULL!\n");
+    }
+}
+
 nodeptr_t add_endnode(nodeptr_t end)
 {
     if (end == NULL) {
@@ -229,12 +258,10 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
     int counter = 1;
 
     if (node_num > 0) {
-        MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+        MSG_DATA("%s\n", STU_INFO_LABEL);
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n", current->data.name,
-                current->data.stu_id, current->data.score[0], current->data.score[1],
-                current->data.score[2], current->data.stu_age, current->data.stu_sex? "boy" : "girl");
-            MSG_DBG("%d\t current ptr %p\n",counter++, current);
+            current_node_info(current, LOG_LEVEL_DATA);
+            MSG_DBG("%d\t current ptr %p\n", counter++, current);
         }
     } else if (node_num == 0) {
         MSG_INFO("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
@@ -291,7 +318,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
         fflush(stdin);
         scanf("%c", confirm_code);
     }
-    MSG_DBG("head ptr %p\n",head);
+    MSG_DBG("head ptr %p\n", head);
     save_to_file(head, 0);
 
     return EOK;
@@ -349,11 +376,8 @@ int modify_info(nodeptr_t head)
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
                     &current->data.stu_age, &current->data.stu_sex);
 
-            MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
-            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
-                current->data.name, current->data.stu_id,
-                current->data.score[0], current->data.score[1], current->data.score[2],
-                current->data.stu_age, current->data.stu_sex? "boy" : "girl");
+            MSG_DATA("%s\n", STU_INFO_LABEL);
+            current_node_info(current, LOG_LEVEL_DATA);
             break;
         }
     }
@@ -381,11 +405,8 @@ int find_info(nodeptr_t head, unsigned char *confirm_code)
             nodeptr_t current = head;
             for (; current != NULL; current = current->next) {
                 if (current->data.stu_id == stu_id) {
-                    MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
-                    MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
-                        current->data.name, current->data.stu_id,
-                        current->data.score[0], current->data.score[1], current->data.score[2],
-                        current->data.stu_age, current->data.stu_sex? "boy" : "girl");
+                    MSG_DATA("%s\n", STU_INFO_LABEL);
+                    current_node_info(current, LOG_LEVEL_DATA);
                     break;
                 }
             }
@@ -431,12 +452,9 @@ int sort_info(nodeptr_t head)
         bubble_sort(head);
 #endif
 
-        MSG_DBG("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+        MSG_DBG("%s\n", STU_INFO_LABEL);
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            MSG_DBG("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
-                current->data.name, current->data.stu_id,
-                current->data.score[0], current->data.score[1], current->data.score[2],
-                current->data.stu_age, current->data.stu_sex? "boy" : "girl");
+            current_node_info(current, LOG_LEVEL_DEBUG);
         }
         save_to_file(head, 0);
     }

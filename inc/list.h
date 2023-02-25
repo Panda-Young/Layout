@@ -35,6 +35,7 @@ do { \
 #define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args)
 
 #define FILE_NAME       "stu_info.txt"
+#define STU_INFO_LABEL  "Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex"
 
 #define ANOTHER_WAY     0
 #define NUM_ELEMENT     7
@@ -51,7 +52,19 @@ do { \
 #define EPASSWD        -4
 #define EMODE          -5
 
-typedef struct {
+typedef enum {
+    LOG_LEVEL_GREY = 0,   // grey
+    LOG_LEVEL_INFO,       // green
+    LOG_LEVEL_PROMPT,     // yellow
+    LOG_LEVEL_DEBUG,      // blue
+    LOG_LEVEL_ERROR,      // red
+    LOG_LEVEL_FATAL,      // purple
+    LOG_LEVEL_DATA,       // light blue
+    LOG_LEVEL_WHITE,      // white
+    LOG_LEVEL_MAX
+}log_level_t;
+
+typedef struct STU_INFO {
     char            name[20];
     unsigned int    stu_id;
     unsigned short  score[3];
@@ -59,18 +72,20 @@ typedef struct {
     bool            stu_sex;
 }stu_info_t;
 
-typedef struct node {
+typedef struct NODE {
     stu_info_t      data;
-    struct node     *next;
+    struct NODE     *next;
 }node_t, *nodeptr_t;
 
-typedef enum encrypt_method {
+typedef enum ENCRYPT_METHOD {
     BitwiseXOR = 1,
     Arithmetic,
 }encrypt_method_t;
 
 int verify_passwd();
 int set_secure_password();
+
+void current_node_info(nodeptr_t current, log_level_t level);
 
 nodeptr_t add_endnode(nodeptr_t end);
 nodeptr_t add_beginnode(nodeptr_t head);
