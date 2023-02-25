@@ -41,7 +41,7 @@ void HiddenInput(char *passwd)
     }
     passwd[len] = '\0';
     MSG_INFO("\n");
-    MSG_DBG(MSG_DBG_ENABLE, "HiddenInput:%s\n", passwd);
+    MSG_DBG("HiddenInput:%s\n", passwd);
 }
 
 /**
@@ -69,7 +69,7 @@ int encrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
         }
     }
 
-    MSG_DBG(MSG_DBG_ENABLE, "after encrypt str:%s\n", encrypt_str);
+    MSG_DBG("after encrypt str:%s\n", encrypt_str);
 
     FILE *KEY = fopen(key_file, "w+");
     if (KEY == NULL) {
@@ -101,7 +101,7 @@ int decrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
     fread(decrypt_str, pw_len, 1, KEY);
     fclose(KEY);
     KEY = NULL;
-    MSG_DBG(MSG_DBG_ENABLE, "before decrypt str:%s\n", decrypt_str);
+    MSG_DBG("before decrypt str:%s\n", decrypt_str);
 
     switch (MODE)
     {
@@ -119,7 +119,7 @@ int decrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
         }
     }
 
-    MSG_DBG(MSG_DBG_ENABLE, "after decrypt str:%s\n", pw_str);
+    MSG_DBG("after decrypt str:%s\n", pw_str);
 
     return EOK;
 }
@@ -215,6 +215,6 @@ int set_secure_password()
         }
     }
 
-    MSG_DBG(MSG_DBG_ENABLE, "entered pw:%s\nlength: %ld\n", pw_str, strlen(pw_str));
+    MSG_DBG("entered pw:%s\nlength: %ld\n", pw_str, strlen(pw_str));
     return EOK;
 }

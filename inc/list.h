@@ -18,12 +18,14 @@
 #include <errno.h>
 #include <conio.h>
 
+extern bool MSG_DBG_ENABLE;
+
 #define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args)
 #define MSG_INFO(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args)
 #define MSG_PROMPT(fmt, args...)    printf("\e[1;33m" fmt "\e[0m", ## args)
-#define MSG_DBG(enable, fmt, args...) \
+#define MSG_DBG(fmt, args...) \
 do { \
-    if (enable == 1) { \
+    if (MSG_DBG_ENABLE) { \
         printf("\e[1;34m" fmt "\e[0m", ## args); \
     } \
 } while(0)
@@ -86,7 +88,5 @@ int modify_info(nodeptr_t head);
 int delete_info(nodeptr_t head);
 int find_info(nodeptr_t head, unsigned char *confirm_code);
 int sort_info(nodeptr_t head);
-
-extern bool MSG_DBG_ENABLE;
 
 #endif

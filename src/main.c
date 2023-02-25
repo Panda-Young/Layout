@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 
     int counter = 1;
     for (nodeptr_t current = head; current != NULL; current = current->next) {
-        MSG_DBG(MSG_DBG_ENABLE, "%d\t current ptr %p\n",counter++, current);
+        MSG_DBG("%d\t current ptr %p\n",counter++, current);
         free(current);
     }
 
