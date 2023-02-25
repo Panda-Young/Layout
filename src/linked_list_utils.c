@@ -8,8 +8,6 @@
 
 #include "list.h"
 
-extern bool msg_dbg_enable;
-
 nodeptr_t add_endnode(nodeptr_t end)
 {
     if (end == NULL) {
@@ -236,7 +234,7 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
             MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n", current->data.name,
                 current->data.stu_id, current->data.score[0], current->data.score[1],
                 current->data.score[2], current->data.stu_age, current->data.stu_sex? "boy" : "girl");
-            MSG_DBG(msg_dbg_enable, "%d\t current ptr %p\n",counter++, current);
+            MSG_DBG(MSG_DBG_ENABLE, "%d\t current ptr %p\n",counter++, current);
         }
     } else if (node_num == 0) {
         MSG_INFO("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
@@ -293,7 +291,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
         fflush(stdin);
         scanf("%c", confirm_code);
     }
-    MSG_DBG(msg_dbg_enable, "head ptr %p\n",head);
+    MSG_DBG(MSG_DBG_ENABLE, "head ptr %p\n",head);
     save_to_file(head, 0);
 
     return EOK;
@@ -433,9 +431,9 @@ int sort_info(nodeptr_t head)
         bubble_sort(head);
 #endif
 
-        MSG_DBG(msg_dbg_enable, "Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+        MSG_DBG(MSG_DBG_ENABLE, "Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            MSG_DBG(msg_dbg_enable, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
+            MSG_DBG(MSG_DBG_ENABLE, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
                 current->data.name, current->data.stu_id,
                 current->data.score[0], current->data.score[1], current->data.score[2],
                 current->data.stu_age, current->data.stu_sex? "boy" : "girl");

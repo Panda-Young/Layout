@@ -8,7 +8,7 @@
 
 #include "list.h"
 
-bool msg_dbg_enable = FALSE;
+bool MSG_DBG_ENABLE = FALSE;
 
 /**
  * @description: UI operation interface
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
         switch(cmd_ch) {
             case 'd' : {
                 MSG_PROMPT("Enable debug massage.\n");
-                msg_dbg_enable = TRUE;
+                MSG_DBG_ENABLE = TRUE;
                 break;
             }
             case 'h' : {
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 
     int counter = 1;
     for (nodeptr_t current = head; current != NULL; current = current->next) {
-        MSG_DBG(msg_dbg_enable, "%d\t current ptr %p\n",counter++, current);
+        MSG_DBG(MSG_DBG_ENABLE, "%d\t current ptr %p\n",counter++, current);
         free(current);
     }
 
