@@ -8,6 +8,8 @@
 
 #include "list.h"
 
+extern bool msg_dbg_enable;
+
 nodeptr_t add_endnode(nodeptr_t end)
 {
     if (end == NULL) {
@@ -231,10 +233,10 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
     if (node_num > 0) {
         MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", current->data.name,
+            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n", current->data.name,
                 current->data.stu_id, current->data.score[0], current->data.score[1],
-                current->data.score[2], current->data.stu_age, current->data.stu_sex);
-            MSG_DBG("%d\t current ptr %p\n",counter++, current);
+                current->data.score[2], current->data.stu_age, current->data.stu_sex? "boy" : "girl");
+            MSG_DBG(msg_dbg_enable, "%d\t current ptr %p\n",counter++, current);
         }
     } else if (node_num == 0) {
         MSG_INFO("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
@@ -291,7 +293,7 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
         fflush(stdin);
         scanf("%c", confirm_code);
     }
-    MSG_DBG("head ptr %p\n",head);
+    MSG_DBG(msg_dbg_enable, "head ptr %p\n",head);
     save_to_file(head, 0);
 
     return EOK;
@@ -350,10 +352,10 @@ int modify_info(nodeptr_t head)
                     &current->data.stu_age, &current->data.stu_sex);
 
             MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
-            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+            MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
                 current->data.name, current->data.stu_id,
                 current->data.score[0], current->data.score[1], current->data.score[2],
-                current->data.stu_age, current->data.stu_sex);
+                current->data.stu_age, current->data.stu_sex? "boy" : "girl");
             break;
         }
     }
@@ -382,10 +384,10 @@ int find_info(nodeptr_t head, unsigned char *confirm_code)
             for (; current != NULL; current = current->next) {
                 if (current->data.stu_id == stu_id) {
                     MSG_DATA("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
-                    MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+                    MSG_DATA("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
                         current->data.name, current->data.stu_id,
                         current->data.score[0], current->data.score[1], current->data.score[2],
-                        current->data.stu_age, current->data.stu_sex);
+                        current->data.stu_age, current->data.stu_sex? "boy" : "girl");
                     break;
                 }
             }
@@ -431,12 +433,12 @@ int sort_info(nodeptr_t head)
         bubble_sort(head);
 #endif
 
-        MSG_DBG("Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
+        MSG_DBG(msg_dbg_enable, "Name\t\tID\t\tChinese\t\tMath\t\tEnglish\t\tAge\t\tSex\n");
         for (nodeptr_t current = head; current != NULL; current = current->next) {
-            MSG_DBG("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+            MSG_DBG(msg_dbg_enable, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%s\n",
                 current->data.name, current->data.stu_id,
                 current->data.score[0], current->data.score[1], current->data.score[2],
-                current->data.stu_age, current->data.stu_sex);
+                current->data.stu_age, current->data.stu_sex? "boy" : "girl");
         }
         save_to_file(head, 0);
     }

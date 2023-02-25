@@ -13,6 +13,8 @@
 #define MIN_PW_LEN 8
 #define KEY_FILE "key"
 
+extern bool msg_dbg_enable;
+
 /**
  * @description: Hide plaintext input
  * @param {char} *passwd
@@ -41,7 +43,7 @@ void HiddenInput(char *passwd)
     }
     passwd[len] = '\0';
     MSG_INFO("\n");
-    MSG_DBG("HiddenInput:%s\n", passwd);
+    MSG_DBG(msg_dbg_enable, "HiddenInput:%s\n", passwd);
 }
 
 /**
@@ -53,10 +55,24 @@ void HiddenInput(char *passwd)
 int encrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
 {
     int8_t encrypt_str[MAX_INPUT_LEN] = {0};
-    for (int i = 0; i < strlen(pw_str); i++) {
-        encrypt_str[i] = pw_str[i] ^ 'F';
+    switch (MODE)
+    {
+        case BitwiseXOR: {
+            for (int i = 0; i < strlen(pw_str); i++) {
+                encrypt_str[i] = pw_str[i] ^ 'F';
+            }
+            break;
+        }
+        case Arithmetic: {
+            break;
+        }
+        default: {
+            break;
+        }
     }
-    MSG_DBG("after encrypt str:%s\n", encrypt_str);
+
+    MSG_DBG(msg_dbg_enable, "after encrypt str:%s\n", encrypt_str);
+
     FILE *KEY = fopen(key_file, "w+");
     if (KEY == NULL) {
         MSG_ERR("open key file error\n");
@@ -87,11 +103,25 @@ int decrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
     fread(decrypt_str, pw_len, 1, KEY);
     fclose(KEY);
     KEY = NULL;
-    MSG_DBG("before decrypt str:%s\n", decrypt_str);
-    for (int i = 0; i < strlen(decrypt_str); i++) {
-        pw_str[i] = decrypt_str[i] ^ 'F';
+    MSG_DBG(msg_dbg_enable, "before decrypt str:%s\n", decrypt_str);
+
+    switch (MODE)
+    {
+        case BitwiseXOR: {
+            for (int i = 0; i < strlen(decrypt_str); i++) {
+                pw_str[i] = decrypt_str[i] ^ 'F';
+            }
+            break;
+        }
+        case Arithmetic: {
+            break;
+        }
+        default: {
+            break;
+        }
     }
-    MSG_DBG("after decrypt str:%s\n", pw_str);
+
+    MSG_DBG(msg_dbg_enable, "after decrypt str:%s\n", pw_str);
 
     return EOK;
 }
@@ -187,6 +217,6 @@ int set_secure_password()
         }
     }
 
-    MSG_DBG("entered pw:%s\nlength: %ld\n", pw_str, strlen(pw_str));
+    MSG_DBG(msg_dbg_enable, "entered pw:%s\nlength: %ld\n", pw_str, strlen(pw_str));
     return EOK;
 }

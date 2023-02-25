@@ -8,6 +8,8 @@
 
 #include "list.h"
 
+bool msg_dbg_enable = FALSE;
+
 /**
  * @description: UI operation interface
  * @param {int} argc
@@ -19,8 +21,13 @@ int main(int argc, char *argv[])
     MSG_PROMPT("Welcome to Use the Student Information Management System!\n");
 
     char cmd_ch;
-    while ((cmd_ch = getopt(argc, argv, "::hv")) != -1) {
+    while ((cmd_ch = getopt(argc, argv, "::dhv")) != -1) {
         switch(cmd_ch) {
+            case 'd' : {
+                MSG_PROMPT("Enable debug massage.\n");
+                msg_dbg_enable = TRUE;
+                break;
+            }
             case 'h' : {
                 MSG_PROMPT("Please follow the instructions to choose.\n");
                 break;
@@ -120,7 +127,7 @@ int main(int argc, char *argv[])
 
     int counter = 1;
     for (nodeptr_t current = head; current != NULL; current = current->next) {
-        MSG_DBG("%d\t current ptr %p\n",counter++, current);
+        MSG_DBG(msg_dbg_enable, "%d\t current ptr %p\n",counter++, current);
         free(current);
     }
 

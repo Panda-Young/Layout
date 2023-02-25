@@ -8,6 +8,8 @@
 
 #include "list.h"
 
+extern bool msg_dbg_enable;
+
 void swap_node(nodeptr_t tmp_a, nodeptr_t tmp_b)
 {
     stu_info_t tmp;

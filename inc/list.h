@@ -18,16 +18,15 @@
 #include <errno.h>
 #include <conio.h>
 
-#define DBG_MSG_ENABLE              0
-
 #define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args)
 #define MSG_INFO(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args)
 #define MSG_PROMPT(fmt, args...)    printf("\e[1;33m" fmt "\e[0m", ## args)
-#if     DBG_MSG_ENABLE
-#define MSG_DBG(fmt, args...)       printf("\e[1;34m" fmt "\e[0m", ## args)
-#else
-#define MSG_DBG(fmt, args...)
-#endif
+#define MSG_DBG(enable, fmt, args...) \
+do { \
+    if (enable == 1) { \
+        printf("\e[1;34m" fmt "\e[0m", ## args); \
+    } \
+} while(0)
 #define MSG_ERR(fmt, args...)       printf("\e[1;31m" fmt "\e[0m", ## args)
 #define MSG_FATAL(fmt, args...)     printf("\e[1;35m" fmt "\e[0m", ## args)
 #define MSG_DATA(fmt, args...)      printf("\e[1;36m" fmt "\e[0m", ## args)
@@ -41,8 +40,8 @@
 #define ASCII_NEW_LINE  10
 #define ASCII_ENTER     13
 
-#define TRUE            1
-#define FALSE           0
+#define TRUE            true
+#define FALSE           false
 #define EOK             0
 #define EINPUT         -1
 #define EALLOC         -2
