@@ -133,7 +133,7 @@ nodeptr_t reverse_list(nodeptr_t head)
  *              1   Append the current node information to the end of file.
  * @return {int}
  */
-int save_to_file(nodeptr_t tmp, bool mode)
+int32_t save_to_file(nodeptr_t tmp, bool mode)
 {
     FILE *fp = NULL;
     if (mode == 0) {
@@ -166,10 +166,10 @@ int save_to_file(nodeptr_t tmp, bool mode)
 /**
  * @Descripttion: creat new file to save infomation
  * @param {nodeptr_t} head
- * @param {unsigned char} *confirm_code
+ * @param {uint8_t} *confirm_code
  * @return {int}
  */
-int create_file(nodeptr_t head, unsigned char *confirm_code)
+int32_t create_file(nodeptr_t head, uint8_t *confirm_code)
 {
     if (head == NULL) {
         return EALLOC;
@@ -183,7 +183,7 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
                     &current->data.stu_age, &current->data.stu_sex);
 
             MSG_PROMPT("Whether continue to add info? Press 'Y' or any other key to End!\n");
-            if (scanf("%c", confirm_code) && *confirm_code == 10) {
+            if (scanf("%c", confirm_code) && *confirm_code == ASCII_NEW_LINE) {
                 scanf("%c", confirm_code);
             }
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
@@ -209,7 +209,7 @@ int create_file(nodeptr_t head, unsigned char *confirm_code)
  * @param {bool} *any_info
  * @return {int}
  */
-int read_file(nodeptr_t head)
+int32_t read_file(nodeptr_t head)
 {
     FILE *fp = NULL;
     if ((fp = fopen(FILE_NAME, "r")) == NULL) {
@@ -221,13 +221,13 @@ int read_file(nodeptr_t head)
         free(current);
     }
 
-    int node_num = 0;
+    int32_t node_num = 0;
     nodeptr_t current = head;
     while (fscanf(fp, "%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
             &current->data.stu_age, &current->data.stu_sex) == NUM_ELEMENT) {
         node_num++;
-        if(fgetc(fp) == 10 && fgetc(fp) == EOF) {
+        if(fgetc(fp) == ASCII_NEW_LINE && fgetc(fp) == EOF) {
             break;
         } else {
             fseek(fp, -1, SEEK_CUR);
@@ -244,18 +244,18 @@ int read_file(nodeptr_t head)
 /**
  * @Descripttion: View all information in the file
  * @param {nodeptr_t} head
- * @param {unsigned char} *confirm_code
+ * @param {uint8_t} *confirm_code
  * @return {int}
  */
-int view_info(nodeptr_t head, unsigned char *confirm_code)
+int32_t view_info(nodeptr_t head, uint8_t *confirm_code)
 {
     if (head == NULL) {
         MSG_ERR("malloc failed");
         return EALLOC;
     }
 
-    int node_num = read_file(head);
-    int counter = 1;
+    int32_t node_num = read_file(head);
+    int32_t counter = 1;
 
     if (node_num > 0) {
         MSG_DATA("%s\n", STU_INFO_LABEL);
@@ -265,7 +265,7 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
         }
     } else if (node_num == 0) {
         MSG_INFO("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
-        if (scanf("%c", confirm_code) && *confirm_code == 10) {
+        if (scanf("%c", confirm_code) && *confirm_code == ASCII_NEW_LINE) {
             scanf("%c", confirm_code);
         }
         create_file(head, confirm_code);
@@ -279,10 +279,10 @@ int view_info(nodeptr_t head, unsigned char *confirm_code)
 /**
  * @description: Delete someone's information
  * @param {nodeptr_t} head
- * @param {unsigned char} *confirm_code
+ * @param {uint8_t} *confirm_code
  * @return {int}
  */
-int add_info(nodeptr_t head, unsigned char *confirm_code)
+int32_t add_info(nodeptr_t head, uint8_t *confirm_code)
 {
     if (head == NULL) {
         MSG_ERR("malloc failed");
@@ -329,9 +329,9 @@ int add_info(nodeptr_t head, unsigned char *confirm_code)
  * @param {nodeptr_t} head
  * @return {int}
  */
-int delete_info(nodeptr_t head)
+int32_t delete_info(nodeptr_t head)
 {
-    unsigned int stu_id;
+    uint32_t stu_id;
     MSG_PROMPT("Please input student id you want to delete.\n");
     scanf("%d", &stu_id);
 
@@ -361,9 +361,9 @@ int delete_info(nodeptr_t head)
  * @param {nodeptr_t} head
  * @return {int}
  */
-int modify_info(nodeptr_t head)
+int32_t modify_info(nodeptr_t head)
 {
-    unsigned int stu_id;
+    uint32_t stu_id;
     MSG_PROMPT("Please input student id you want to modify.\n");
     fflush(stdin);
     scanf("%d", &stu_id);
@@ -395,11 +395,11 @@ int modify_info(nodeptr_t head)
  * @param {nodeptr_t} head
  * @return {int}
  */
-int find_info(nodeptr_t head, unsigned char *confirm_code)
+int32_t find_info(nodeptr_t head, uint8_t *confirm_code)
 {
     while (1) {
         MSG_PROMPT("Please input student id you want to find.\n");
-        unsigned int stu_id = 0;
+        uint32_t stu_id = 0;
         scanf("%d", &stu_id);
         if (stu_id != 0) {
             nodeptr_t current = head;
@@ -441,7 +441,7 @@ int find_info(nodeptr_t head, unsigned char *confirm_code)
  * @param {nodeptr_t} head
  * @return {int}
  */
-int sort_info(nodeptr_t head)
+int32_t sort_info(nodeptr_t head)
 {
     if (head->next != NULL) {
 #if ANOTHER_WAY

@@ -15,16 +15,16 @@
 
 /**
  * @description: Hide plaintext input
- * @param {char} *passwd
+ * @param {int8_t} *passwd
  * @return {*}
  */
-void HiddenInput(char *passwd)
+void HiddenInput(int8_t *passwd)
 {
-    char ch = 0;
-    int len = 0;
+    int8_t ch = 0;
+    int32_t len = 0;
     while(ch = getch())
     {
-        if (ch == 13) { // end with press [Enter]
+        if (ch == ASCII_ENTER) { // end with press [Enter]
             break;
         }
         if(ch != '\b') { // backspace
@@ -46,29 +46,46 @@ void HiddenInput(char *passwd)
 
 /**
  * @description: encrypt password string to key file.
- * @param {char} *key_file
- * @param {char} *pw_str
+ * @param {int8_t} *key_file
+ * @param {int8_t} *pw_str
  * @return {int}
  */
-int encrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
+int32_t encrypt(int8_t *key_file, int8_t *pw_str, encrypt_method_t MODE)
 {
     int8_t encrypt_str[MAX_INPUT_LEN] = {0};
+    int32_t i = 0;
+
+    MSG_DBG("before encrypt str:%s, len: %d\n", pw_str, strlen(pw_str));
+
     switch (MODE)
     {
         case BitwiseXOR: {
-            for (int i = 0; i < strlen(pw_str); i++) {
+            for (i = 0; i < strlen(pw_str); i++) {
                 encrypt_str[i] = pw_str[i] ^ 'F';
             }
             break;
         }
         case Arithmetic: {
+            for (i = 0; i < strlen(pw_str); i++) {
+                if (pw_str[i] >= 'a' && pw_str[i] <= 'z') {
+                    encrypt_str[i] = pw_str[i] - ('a' - 'A');
+                } else if (pw_str[i] >= 'A' && pw_str[i] <= 'Z') {
+                    encrypt_str[i] = pw_str[i] + ('a' - 'A');
+                } else if (pw_str[i] >= '0' && pw_str[i] < '9') {
+                    encrypt_str[i] = pw_str[i] + 1;
+                } else if (pw_str[i] == '9') {
+                    encrypt_str[i] = '0';
+                } else {
+                    MSG_ERR("Invalid character!\n");
+                    return EINPUT;
+                }
+            }
             break;
         }
         default: {
             break;
         }
     }
-
     MSG_DBG("after encrypt str:%s\n", encrypt_str);
 
     FILE *KEY = fopen(key_file, "w+");
@@ -83,20 +100,22 @@ int encrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
 
 /**
  * @description: decrypt key file to password string.
- * @param {char} *key_file
- * @param {char} *pw_str
- * @return {char *}
+ * @param {int8_t} *key_file
+ * @param {int8_t} *pw_str
+ * @return {int8_t *}
  */
-int decrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
+int32_t decrypt(int8_t *key_file, int8_t *pw_str, encrypt_method_t MODE)
 {
     int8_t decrypt_str[MAX_INPUT_LEN] = {0};
+    int32_t i = 0;
+
     FILE *KEY = fopen(key_file, "r");
     if (KEY == NULL) {
         MSG_ERR("open key file error\n");
         return EFOPEN;
     }
     fseek(KEY, 0, SEEK_END);
-    int pw_len = ftell(KEY);
+    int32_t pw_len = ftell(KEY);
     fseek(KEY, 0, SEEK_SET);
     fread(decrypt_str, pw_len, 1, KEY);
     fclose(KEY);
@@ -106,12 +125,26 @@ int decrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
     switch (MODE)
     {
         case BitwiseXOR: {
-            for (int i = 0; i < strlen(decrypt_str); i++) {
+            for (i = 0; i < strlen(decrypt_str); i++) {
                 pw_str[i] = decrypt_str[i] ^ 'F';
             }
             break;
         }
         case Arithmetic: {
+            for (i = 0; i < strlen(decrypt_str); i++) {
+                if (decrypt_str[i] >= 'a' && decrypt_str[i] <= 'z') {
+                    pw_str[i] = decrypt_str[i] - ('a' - 'A');
+                } else if (decrypt_str[i] >= 'A' && decrypt_str[i] <= 'Z') {
+                    pw_str[i] = decrypt_str[i] + ('a' - 'A');
+                } else if (decrypt_str[i] > '0' && decrypt_str[i] <= '9') {
+                    pw_str[i] = decrypt_str[i] - 1;
+                } else if (decrypt_str[i] == '0') {
+                    pw_str[i] = '9';
+                } else {
+                    MSG_ERR("Invalid character!\n");
+                    return EINPUT;
+                }
+            }
             break;
         }
         default: {
@@ -128,7 +161,7 @@ int decrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
  * @description: Verify password
  * @return {int}
  */
-int verify_passwd()
+int32_t verify_passwd()
 {
     if (access(KEY_FILE, F_OK) != 0) {
         MSG_ERR("There is no saved password.\n");
@@ -136,12 +169,12 @@ int verify_passwd()
         return EOK;
     }
 
-    char passwd[MAX_INPUT_LEN] = {0}, pw_str[MAX_INPUT_LEN] = {0};
+    int8_t passwd[MAX_INPUT_LEN] = {0}, pw_str[MAX_INPUT_LEN] = {0};
     if (decrypt(KEY_FILE, pw_str, BitwiseXOR) != EOK) {
         MSG_ERR("Can't get saved password.\n");
         return EFOPEN;
     }
-    int try_num = 0;
+    int32_t try_num = 0;
     MSG_PROMPT("Please input password. %d/%d\n", try_num + 1, TRY_TIMES);
     while (try_num != TRY_TIMES) {
         try_num++;
@@ -162,7 +195,7 @@ int verify_passwd()
  * @description: Set an secure password of 8 to 15 characters, including uppercase and lowercase letters and numbers.
  * @return {*}
  */
-int set_secure_password()
+int32_t set_secure_password()
 {
     int8_t pw_str[MAX_INPUT_LEN] = {0}, pw_str2[MAX_INPUT_LEN] = {0};
     uint16_t uppercase = 0, lowercase = 0, numbers = 0, others_ch = 0;
@@ -179,7 +212,7 @@ int set_secure_password()
 
         HiddenInput(pw_str);
 
-        for (int i = 0; i < strlen(pw_str); i ++) {
+        for (int32_t i = 0; i < strlen(pw_str); i ++) {
             if (pw_str[i] >= 'a' && pw_str[i] <= 'z') {
                 lowercase++;
             } else if (pw_str[i] >= 'A' && pw_str[i] <= 'Z') {

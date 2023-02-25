@@ -18,20 +18,63 @@
 #include <errno.h>
 #include <conio.h>
 
-extern bool MSG_DBG_ENABLE;
+extern uint8_t MSG_DBG_ENABLE;
 
 #define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args)
-#define MSG_INFO(fmt, args...)      printf("\e[1;32m" fmt "\e[0m", ## args)
-#define MSG_PROMPT(fmt, args...)    printf("\e[1;33m" fmt "\e[0m", ## args)
+#define MSG_INFO(fmt, args...) \
+do { \
+    if (MSG_DBG_ENABLE == 3) { \
+        printf("%s: L%d: %s():\t", __FILE__, __LINE__, __FUNCTION__); \
+        printf("\e[1;32m" fmt "\e[0m", ## args); \
+    } else { \
+        printf("\e[1;32m" fmt "\e[0m", ## args); \
+    } \
+} while(0)
+#define MSG_PROMPT(fmt, args...) \
+do { \
+    if (MSG_DBG_ENABLE == 3) { \
+        printf("%s: L%d: %s():\t", __FILE__, __LINE__, __FUNCTION__); \
+        printf("\e[1;33m" fmt "\e[0m", ## args); \
+    } else { \
+        printf("\e[1;33m" fmt "\e[0m", ## args); \
+    } \
+} while(0)
 #define MSG_DBG(fmt, args...) \
 do { \
-    if (MSG_DBG_ENABLE) { \
+    if (MSG_DBG_ENABLE == 1) { \
+        printf("\e[1;34m" fmt "\e[0m", ## args); \
+    } else if (MSG_DBG_ENABLE == 2 || MSG_DBG_ENABLE == 3) { \
+        printf("%s: L%d: %s():\t", __FILE__, __LINE__, __FUNCTION__); \
         printf("\e[1;34m" fmt "\e[0m", ## args); \
     } \
 } while(0)
-#define MSG_ERR(fmt, args...)       printf("\e[1;31m" fmt "\e[0m", ## args)
-#define MSG_FATAL(fmt, args...)     printf("\e[1;35m" fmt "\e[0m", ## args)
-#define MSG_DATA(fmt, args...)      printf("\e[1;36m" fmt "\e[0m", ## args)
+#define MSG_ERR(fmt, args...) \
+do { \
+    if (MSG_DBG_ENABLE == 3) { \
+        printf("%s: L%d: %s():\t", __FILE__, __LINE__, __FUNCTION__); \
+        printf("\e[1;31m" fmt "\e[0m", ## args); \
+    } else { \
+        printf("\e[1;31m" fmt "\e[0m", ## args); \
+    } \
+} while(0)
+#define MSG_FATAL(fmt, args...) \
+do { \
+    if (MSG_DBG_ENABLE == 3) { \
+        printf("%s: L%d: %s():\t", __FILE__, __LINE__, __FUNCTION__); \
+        printf("\e[1;35m" fmt "\e[0m", ## args); \
+    } else { \
+        printf("\e[1;35m" fmt "\e[0m", ## args); \
+    } \
+} while(0)
+#define MSG_DATA(fmt, args...) \
+do { \
+    if (MSG_DBG_ENABLE == 3) { \
+        printf("%s: L%d: %s():\t", __FILE__, __LINE__, __FUNCTION__); \
+        printf("\e[1;36m" fmt "\e[0m", ## args); \
+    } else { \
+        printf("\e[1;36m" fmt "\e[0m", ## args); \
+    } \
+} while(0)
 #define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args)
 
 #define FILE_NAME       "stu_info.txt"
@@ -65,11 +108,11 @@ typedef enum {
 }log_level_t;
 
 typedef struct STU_INFO {
-    char            name[20];
-    unsigned int    stu_id;
-    unsigned short  score[3];
-    unsigned short  stu_age;
-    bool            stu_sex;
+    int8_t      name[20];
+    uint32_t    stu_id;
+    uint16_t    score[3];
+    uint16_t    stu_age;
+    bool        stu_sex;
 }stu_info_t;
 
 typedef struct NODE {
@@ -82,8 +125,8 @@ typedef enum ENCRYPT_METHOD {
     Arithmetic,
 }encrypt_method_t;
 
-int verify_passwd();
-int set_secure_password();
+int32_t verify_passwd();
+int32_t set_secure_password();
 
 void current_node_info(nodeptr_t current, log_level_t level);
 
@@ -94,14 +137,14 @@ nodeptr_t reverse_list(nodeptr_t head);
 nodeptr_t bubble_sort(nodeptr_t head);
 nodeptr_t quick_sort(nodeptr_t head, nodeptr_t end);
 
-int save_to_file(nodeptr_t tmp, bool mode);
-int create_file(nodeptr_t head, unsigned char *confirm_code);
-int read_file(nodeptr_t head);
-int view_info(nodeptr_t head, unsigned char *confirm_code);
-int add_info(nodeptr_t head, unsigned char *confirm_code);
-int modify_info(nodeptr_t head);
-int delete_info(nodeptr_t head);
-int find_info(nodeptr_t head, unsigned char *confirm_code);
-int sort_info(nodeptr_t head);
+int32_t save_to_file(nodeptr_t tmp, bool mode);
+int32_t create_file(nodeptr_t head, uint8_t *confirm_code);
+int32_t read_file(nodeptr_t head);
+int32_t view_info(nodeptr_t head, uint8_t *confirm_code);
+int32_t add_info(nodeptr_t head, uint8_t *confirm_code);
+int32_t modify_info(nodeptr_t head);
+int32_t delete_info(nodeptr_t head);
+int32_t find_info(nodeptr_t head, uint8_t *confirm_code);
+int32_t sort_info(nodeptr_t head);
 
 #endif

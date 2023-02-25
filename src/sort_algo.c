@@ -41,7 +41,7 @@ nodeptr_t quick_sort(nodeptr_t head, nodeptr_t end)
         return head;
     }
 
-    int pivot = head->data.stu_id;
+    int32_t pivot = head->data.stu_id;
     nodeptr_t left = head->next, left_pre = head, right = head->next;
 
     while (right != end->next) {

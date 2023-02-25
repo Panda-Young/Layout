@@ -8,24 +8,32 @@
 
 #include "list.h"
 
-bool MSG_DBG_ENABLE = FALSE;
+uint8_t MSG_DBG_ENABLE = FALSE;
 
 /**
  * @description: UI operation interface
  * @param {int} argc
- * @param {char} *argv
+ * @param {int8_t} *argv
  * @return {int}
  */
-int main(int argc, char *argv[])
+int32_t main(int32_t argc, char *argv[])
 {
     MSG_PROMPT("Welcome to Use the Student Information Management System!\n");
 
-    char cmd_ch;
-    while ((cmd_ch = getopt(argc, argv, "::dhv")) != -1) {
-        switch(cmd_ch) {
+    int8_t optind_ch;
+    while ((optind_ch = getopt(argc, argv, "::d::hv")) != -1) {
+        switch(optind_ch) {
             case 'd' : {
                 MSG_PROMPT("Enable debug massage.\n");
-                MSG_DBG_ENABLE = TRUE;
+                if (optarg == NULL) {
+                    MSG_DBG_ENABLE = 1;
+                } else {
+                    MSG_DBG_ENABLE = atoi(optarg);
+                    if (!(MSG_DBG_ENABLE == 0 || MSG_DBG_ENABLE == 1 || MSG_DBG_ENABLE == 2 || MSG_DBG_ENABLE == 3)) {
+                        MSG_ERR("Invalid paramter, set debug log level to default.\n");
+                        MSG_DBG_ENABLE = 0;
+                    }
+                }
                 break;
             }
             case 'h' : {
@@ -34,6 +42,10 @@ int main(int argc, char *argv[])
             }
             case 'v' : {
                 MSG_PROMPT("Version: 1.1.1\n");
+                break;
+            }
+            default: {
+                MSG_ERR("Invalid operater paramter: -\?\n");
                 break;
             }
         }
@@ -45,7 +57,7 @@ int main(int argc, char *argv[])
         return EALLOC;
     }
     head->next = NULL;
-    unsigned char ui_code = ASCII_ENTER;
+    uint8_t ui_code = ASCII_ENTER;
 
     if (access(FILE_NAME, F_OK)) {
         set_secure_password();
@@ -125,7 +137,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    int counter = 1;
+    int32_t counter = 1;
     for (nodeptr_t current = head; current != NULL; current = current->next) {
         MSG_DBG("%d\t current ptr %p\n", counter++, current);
         free(current);
