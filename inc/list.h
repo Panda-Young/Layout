@@ -63,6 +63,11 @@ typedef struct node {
     struct node     *next;
 }node_t, *nodeptr_t;
 
+typedef enum encrypt_method {
+    BitwiseXOR = 1,
+    Arithmetic,
+}encrypt_method_t;
+
 int verify_passwd();
 int set_secure_password();
 

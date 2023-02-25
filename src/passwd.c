@@ -41,6 +41,7 @@ void HiddenInput(char *passwd)
     }
     passwd[len] = '\0';
     MSG_INFO("\n");
+    MSG_DBG("HiddenInput:%s\n", passwd);
 }
 
 /**
@@ -49,14 +50,19 @@ void HiddenInput(char *passwd)
  * @param {char} *pw_str
  * @return {int}
  */
-int encrypt(char *key_file, char *pw_str)
+int encrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
 {
+    int8_t encrypt_str[MAX_INPUT_LEN] = {0};
+    for (int i = 0; i < strlen(pw_str); i++) {
+        encrypt_str[i] = pw_str[i] ^ 'F';
+    }
+    MSG_DBG("after encrypt str:%s\n", encrypt_str);
     FILE *KEY = fopen(key_file, "w+");
     if (KEY == NULL) {
         MSG_ERR("open key file error\n");
         return EFOPEN;
     }
-    fwrite(pw_str, strlen(pw_str), 1, KEY);
+    fwrite(encrypt_str, strlen(encrypt_str), 1, KEY);
     fclose(KEY);
     return EOK;
 }
@@ -67,8 +73,9 @@ int encrypt(char *key_file, char *pw_str)
  * @param {char} *pw_str
  * @return {char *}
  */
-int decrypt(char *key_file, char *pw_str)
+int decrypt(char *key_file, char *pw_str, encrypt_method_t MODE)
 {
+    int8_t decrypt_str[MAX_INPUT_LEN] = {0};
     FILE *KEY = fopen(key_file, "r");
     if (KEY == NULL) {
         MSG_ERR("open key file error\n");
@@ -77,10 +84,15 @@ int decrypt(char *key_file, char *pw_str)
     fseek(KEY, 0, SEEK_END);
     int pw_len = ftell(KEY);
     fseek(KEY, 0, SEEK_SET);
-    fread(pw_str, pw_len, 1, KEY);
+    fread(decrypt_str, pw_len, 1, KEY);
     fclose(KEY);
     KEY = NULL;
-    MSG_DBG("PW:%s\n", pw_str);
+    MSG_DBG("before decrypt str:%s\n", decrypt_str);
+    for (int i = 0; i < strlen(decrypt_str); i++) {
+        pw_str[i] = decrypt_str[i] ^ 'F';
+    }
+    MSG_DBG("after decrypt str:%s\n", pw_str);
+
     return EOK;
 }
 
@@ -97,7 +109,7 @@ int verify_passwd()
     }
 
     char passwd[MAX_INPUT_LEN] = {0}, pw_str[MAX_INPUT_LEN] = {0};
-    if (decrypt(KEY_FILE, pw_str) != EOK) {
+    if (decrypt(KEY_FILE, pw_str, BitwiseXOR) != EOK) {
         MSG_ERR("Can't get saved password.\n");
         return EFOPEN;
     }
@@ -157,7 +169,7 @@ int set_secure_password()
             MSG_PROMPT("Please enter again to confirm password:\n");
             HiddenInput(pw_str2);
             if (strcmp(pw_str, pw_str2) == 0) {
-                encrypt(KEY_FILE, pw_str);
+                encrypt(KEY_FILE, pw_str, BitwiseXOR);
                 break;
             } else {
                 MSG_PROMPT("The passwords entered twice are different! Reinput:\n");
