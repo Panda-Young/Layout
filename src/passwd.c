@@ -68,11 +68,11 @@ int32_t encrypt(int8_t *key_file, int8_t *pw_str, encrypt_method_t MODE)
         }
         case Arithmetic: {
             for (i = 0; i < strlen(pw_str); i++) {
-                if (pw_str[i] >= 'a' && pw_str[i] <= 'z') {
+                if (islower(pw_str[i])) {
                     encrypt_str[i] = pw_str[i] - ('a' - 'A');
-                } else if (pw_str[i] >= 'A' && pw_str[i] <= 'Z') {
+                } else if (isupper(pw_str[i])) {
                     encrypt_str[i] = pw_str[i] + ('a' - 'A');
-                } else if (pw_str[i] >= '0' && pw_str[i] < '9') {
+                } else if (isdigit(pw_str[i])) {
                     encrypt_str[i] = pw_str[i] + 1;
                 } else if (pw_str[i] == '9') {
                     encrypt_str[i] = '0';
@@ -133,11 +133,11 @@ int32_t decrypt(int8_t *key_file, int8_t *pw_str, encrypt_method_t MODE)
         }
         case Arithmetic: {
             for (i = 0; i < strlen(decrypt_str); i++) {
-                if (decrypt_str[i] >= 'a' && decrypt_str[i] <= 'z') {
+                if (islower(decrypt_str[i])) {
                     pw_str[i] = decrypt_str[i] - ('a' - 'A');
-                } else if (decrypt_str[i] >= 'A' && decrypt_str[i] <= 'Z') {
+                } else if (isupper(decrypt_str[i])) {
                     pw_str[i] = decrypt_str[i] + ('a' - 'A');
-                } else if (decrypt_str[i] > '0' && decrypt_str[i] <= '9') {
+                } else if (isdigit(decrypt_str[i])) {
                     pw_str[i] = decrypt_str[i] - 1;
                 } else if (decrypt_str[i] == '0') {
                     pw_str[i] = '9';
@@ -214,11 +214,11 @@ int32_t set_secure_password()
         HiddenInput(pw_str);
 
         for (int32_t i = 0; i < strlen(pw_str); i ++) {
-            if (pw_str[i] >= 'a' && pw_str[i] <= 'z') {
+            if (islower(pw_str[i])) {
                 lowercase++;
-            } else if (pw_str[i] >= 'A' && pw_str[i] <= 'Z') {
+            } else if (isupper(pw_str[i])) {
                 uppercase++;
-            } else if (pw_str[i] >= '0' && pw_str[i] <= '9') {
+            } else if (isdigit(pw_str[i])) {
                 numbers++;
             } else {
                 others_ch++;
