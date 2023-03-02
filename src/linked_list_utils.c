@@ -141,7 +141,7 @@ int32_t save_to_file(nodeptr_t tmp, bool mode)
             perror("open file failed: ");
             return EFOPEN;
         }
-        while(tmp != NULL) {
+        while (tmp != NULL) {
             fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", tmp->data.name, tmp->data.stu_id,
                         tmp->data.score[0], tmp->data.score[1], tmp->data.score[2],
                         tmp->data.stu_age, tmp->data.stu_sex);
@@ -174,7 +174,7 @@ int32_t create_file(nodeptr_t head, uint8_t *confirm_code)
     if (head == NULL) {
         return EALLOC;
     }
-    if(*confirm_code == 'y' || *confirm_code == 'Y') {
+    if (*confirm_code == 'y' || *confirm_code == 'Y') {
         nodeptr_t current = head;
         while (1) {
             MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
@@ -227,7 +227,7 @@ int32_t read_file(nodeptr_t head)
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
             &current->data.stu_age, &current->data.stu_sex) == NUM_ELEMENT) {
         node_num++;
-        if(fgetc(fp) == ASCII_NEW_LINE && fgetc(fp) == EOF) {
+        if (fgetc(fp) == ASCII_NEW_LINE && fgetc(fp) == EOF) {
             break;
         } else {
             fseek(fp, -1, SEEK_CUR);
@@ -446,7 +446,7 @@ int32_t sort_info(nodeptr_t head)
     if (head->next != NULL) {
 #if ANOTHER_WAY
         nodeptr_t end = NULL;
-        for(end = head; end->next != NULL; end = end->next);
+        for (end = head; end->next != NULL; end = end->next);
         quick_sort(head, end);
 #else
         bubble_sort(head);

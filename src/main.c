@@ -22,7 +22,7 @@ int32_t main(int32_t argc, char *argv[])
 
     int8_t optind_ch;
     while ((optind_ch = getopt(argc, argv, "::d::hv")) != -1) {
-        switch(optind_ch) {
+        switch (optind_ch) {
             case 'd' : {
                 MSG_PROMPT("Enable debug massage.\n");
                 if (optarg == NULL) {

@@ -29,7 +29,7 @@ do { \
     } else { \
         printf("\e[1;32m" fmt "\e[0m", ## args); \
     } \
-} while(0)
+} while (0)
 #define MSG_PROMPT(fmt, args...) \
 do { \
     if (MSG_DBG_ENABLE == 3) { \
@@ -38,7 +38,7 @@ do { \
     } else { \
         printf("\e[1;33m" fmt "\e[0m", ## args); \
     } \
-} while(0)
+} while (0)
 #define MSG_DBG(fmt, args...) \
 do { \
     if (MSG_DBG_ENABLE == 1) { \
@@ -47,7 +47,7 @@ do { \
         printf("%s: L%d: %s():\t", __FILE__, __LINE__, __FUNCTION__); \
         printf("\e[1;34m" fmt "\e[0m", ## args); \
     } \
-} while(0)
+} while (0)
 #define MSG_ERR(fmt, args...) \
 do { \
     if (MSG_DBG_ENABLE == 3) { \
@@ -56,7 +56,7 @@ do { \
     } else { \
         printf("\e[1;31m" fmt "\e[0m", ## args); \
     } \
-} while(0)
+} while (0)
 #define MSG_FATAL(fmt, args...) \
 do { \
     if (MSG_DBG_ENABLE == 3) { \
@@ -65,7 +65,7 @@ do { \
     } else { \
         printf("\e[1;35m" fmt "\e[0m", ## args); \
     } \
-} while(0)
+} while (0)
 #define MSG_DATA(fmt, args...) \
 do { \
     if (MSG_DBG_ENABLE == 3) { \
@@ -74,7 +74,7 @@ do { \
     } else { \
         printf("\e[1;36m" fmt "\e[0m", ## args); \
     } \
-} while(0)
+} while (0)
 #define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args)
 
 #define FILE_NAME       "stu_info.txt"

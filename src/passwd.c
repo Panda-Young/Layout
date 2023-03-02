@@ -7,6 +7,7 @@
  */
 
 #include "list.h"
+#include <ctype.h>
 
 #define MAX_INPUT_LEN 30
 #define MAX_PW_LEN 15
@@ -22,13 +23,13 @@ void HiddenInput(int8_t *passwd)
 {
     int8_t ch = 0;
     int32_t len = 0;
-    while(ch = getch())
+    while (ch = getch())
     {
         if (ch == ASCII_ENTER) { // end with press [Enter]
             break;
         }
-        if(ch != '\b') { // backspace
-            if(!((ch <= 'Z' && ch >= 'A') || (ch <= 'z' && ch >= 'a') || (ch <= '9' && ch >= '0'))) {
+        if (ch != '\b') { // backspace
+            if (isalnum(ch) == 0) {
                 continue;
             }
             passwd[len] = ch;
