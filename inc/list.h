@@ -85,6 +85,7 @@ do { \
 #define TRY_TIMES       3
 #define ASCII_NEW_LINE  10
 #define ASCII_ENTER     13
+#define ASCII_CTRL_C    3
 
 #define TRUE            true
 #define FALSE           false

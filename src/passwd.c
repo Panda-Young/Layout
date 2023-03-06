@@ -25,7 +25,7 @@ void HiddenInput(int8_t *passwd)
     int32_t len = 0;
     while (ch = getch())
     {
-        if (ch == ASCII_ENTER) { // end with press [Enter]
+        if (ch == ASCII_ENTER || ch == ASCII_CTRL_C) { // end with press [Enter]
             break;
         }
         if (ch != '\b') { // backspace
@@ -72,7 +72,7 @@ int32_t encrypt(int8_t *key_file, int8_t *pw_str, encrypt_method_t MODE)
                     encrypt_str[i] = pw_str[i] - ('a' - 'A');
                 } else if (isupper(pw_str[i])) {
                     encrypt_str[i] = pw_str[i] + ('a' - 'A');
-                } else if (isdigit(pw_str[i])) {
+                } else if (isdigit(pw_str[i]) && pw_str[i] != '9') {
                     encrypt_str[i] = pw_str[i] + 1;
                 } else if (pw_str[i] == '9') {
                     encrypt_str[i] = '0';
@@ -137,7 +137,7 @@ int32_t decrypt(int8_t *key_file, int8_t *pw_str, encrypt_method_t MODE)
                     pw_str[i] = decrypt_str[i] - ('a' - 'A');
                 } else if (isupper(decrypt_str[i])) {
                     pw_str[i] = decrypt_str[i] + ('a' - 'A');
-                } else if (isdigit(decrypt_str[i])) {
+                } else if (isdigit(decrypt_str[i]) && decrypt_str[i] != '0') {
                     pw_str[i] = decrypt_str[i] - 1;
                 } else if (decrypt_str[i] == '0') {
                     pw_str[i] = '9';
