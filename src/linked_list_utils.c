@@ -219,8 +219,6 @@ int32_t read_file(nodeptr_t head)
         perror("open file failed: ");
         return EFOPEN;
     }
-    MSG_DBG("fp: %ld\n", ftell(fp));
-
     for (nodeptr_t current = head->next; current != NULL; current = current->next) {
         free(current);
     }
@@ -232,18 +230,14 @@ int32_t read_file(nodeptr_t head)
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
             &current->data.stu_age, &current->data.stu_sex) == NUM_ELEMENT) {
             current_node_info(current, LOG_LEVEL_DEBUG);
-            MSG_DBG("fp: %ld\n", ftell(fp));
         } else {
-            current_node_info(current, LOG_LEVEL_DATA);
-            MSG_ERR("fp: %ld\n", ftell(fp));
+            current_node_info(current, LOG_LEVEL_DEBUG);
             break;
         }
         node_num++;
         if (fgetc(fp) == ASCII_NEW_LINE && fgetc(fp) == EOF) {
-        MSG_ERR("end of fiile fp: %ld\n", ftell(fp));
             break;
         } else {
-            MSG_ERR("fp: %ld\n", ftell(fp));
             fseek(fp, -1, SEEK_CUR);
             if ((current = add_endnode(current)) ==  NULL) {
                 MSG_ERR("add new link node error\n");
@@ -251,7 +245,6 @@ int32_t read_file(nodeptr_t head)
             }
         }
     }
-    MSG_DBG("fp: %ld\n", ftell(fp));
     fclose(fp);
     return node_num;
 }
