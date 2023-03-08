@@ -13,7 +13,7 @@ CPPFLAGS = "-I./inc"
 all : main $(OBJ)
 	mkdir -p out/build
 	mv $(OBJ) out/build/
-	mv *.exe out
+	mv main* out
 
 main : $(OBJ)
 	gcc $(OBJ) -o main

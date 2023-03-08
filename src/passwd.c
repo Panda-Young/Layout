@@ -15,6 +15,32 @@
 #define KEY_FILE "key"
 
 /**
+ * @description: encapsulation
+ * @return {int}
+ */
+#if defined (WIN32)
+#include <conio.h>
+int mygetch()
+{
+    return getch();
+}
+#elif defined (__unix)
+#include <termios.h>
+int mygetch()
+{
+    struct termios oldt, newt;
+    int ch;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    return ch;
+}
+#endif
+
+/**
  * @description: Hide plaintext input
  * @param {int8_t} *passwd
  * @return {*}
@@ -23,12 +49,13 @@ void HiddenInput(int8_t *passwd)
 {
     int8_t ch = 0;
     int32_t len = 0;
-    while (ch = getch())
+    scanf("%*[^\n]"); scanf("%*c");
+    while (ch = mygetch())
     {
-        if (ch == ASCII_ENTER || ch == ASCII_CTRL_C) { // end with press [Enter]
+        if (ch == ASCII_NEW_LINE || ch == ASCII_ENTER || ch == ASCII_CTRL_C) { // [Enter] or [Ctrl + C]
             break;
         }
-        if (ch != '\b') { // backspace
+        if (ch != '\b') { // [backspace]
             if (isalnum(ch) == 0) {
                 continue;
             }
@@ -56,7 +83,7 @@ int32_t encrypt(int8_t *key_file, int8_t *pw_str, encrypt_method_t MODE)
     int8_t encrypt_str[MAX_INPUT_LEN] = {0};
     int32_t i = 0;
 
-    MSG_DBG("before encrypt str:%s, len: %d\n", pw_str, strlen(pw_str));
+    MSG_DBG("before encrypt str:%s, len: %lu\n", pw_str, strlen(pw_str));
 
     switch (MODE)
     {

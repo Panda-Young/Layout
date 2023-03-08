@@ -128,31 +128,31 @@ nodeptr_t reverse_list(nodeptr_t head)
  * @Descripttion: save node info to file
  * @param {nodeptr_t} tmp
  * @param {int} mode
- *              0   Write information about all nodes from the current to end to a cleared file,
+ *              SaveFromHead   Write information about all nodes from the current to end to a cleared file,
  *      usually used for the header node.
- *              1   Append the current node information to the end of file.
+ *              SaveFromCurt   Append the current node information to the end of file.
  * @return {int}
  */
-int32_t save_to_file(nodeptr_t tmp, bool mode)
+int32_t save_to_file(nodeptr_t tmp, save_mode_t mode)
 {
     FILE *fp = NULL;
-    if (mode == 0) {
+    if (mode == SaveFromHead) {
         if ((fp = fopen(FILE_NAME, "w+")) == NULL) {
             perror("open file failed: ");
             return EFOPEN;
         }
         while (tmp != NULL) {
-            fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", tmp->data.name, tmp->data.stu_id,
+            fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%hhu\n", tmp->data.name, tmp->data.stu_id,
                         tmp->data.score[0], tmp->data.score[1], tmp->data.score[2],
                         tmp->data.stu_age, tmp->data.stu_sex);
             tmp = tmp->next;
         }
-    } else if (mode == 1){
+    } else if (mode == SaveFromCurt){
         if ((fp = fopen(FILE_NAME, "a+")) == NULL) {
             perror("open file failed: ");
             return EFOPEN;
         }
-        fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", tmp->data.name, tmp->data.stu_id,
+        fprintf(fp, "%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%hhu\n", tmp->data.name, tmp->data.stu_id,
             tmp->data.score[0], tmp->data.score[1], tmp->data.score[2],
             tmp->data.stu_age, tmp->data.stu_sex);
     } else {
@@ -178,21 +178,25 @@ int32_t create_file(nodeptr_t head, uint8_t *confirm_code)
         nodeptr_t current = head;
         while (1) {
             MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
-            scanf("%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
+            if (scanf("%s %d %hd %hd %hd %hd %hhu", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
-                    &current->data.stu_age, &current->data.stu_sex);
+                    &current->data.stu_age, &current->data.stu_sex) != NUM_ELEMENT) {
+                scanf("%*[^\n]"); scanf("%*c");
+                MSG_ERR("Please check student information.\n");
+                return EINPUT;
+            }
+            scanf("%*[^\n]"); scanf("%*c");
 
             MSG_PROMPT("Whether continue to add info? Press 'Y' or any other key to End!\n");
-            if (scanf("%c", confirm_code) && *confirm_code == ASCII_NEW_LINE) {
-                scanf("%c", confirm_code);
-            }
+            scanf("%c", confirm_code);
+            scanf("%*[^\n]"); scanf("%*c");
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
                 current = add_endnode(current);
             } else {
                 break;
             }
         }
-        save_to_file(head, 0);
+        save_to_file(head, SaveFromHead);
         for (nodeptr_t temp = head->next; temp != NULL; temp = temp->next) {
             free(temp);
         }
@@ -206,7 +210,6 @@ int32_t create_file(nodeptr_t head, uint8_t *confirm_code)
 /**
  * @description: read information from file
  * @param {nodeptr_t} head
- * @param {bool} *any_info
  * @return {int}
  */
 int32_t read_file(nodeptr_t head)
@@ -216,6 +219,7 @@ int32_t read_file(nodeptr_t head)
         perror("open file failed: ");
         return EFOPEN;
     }
+    MSG_DBG("fp: %ld\n", ftell(fp));
 
     for (nodeptr_t current = head->next; current != NULL; current = current->next) {
         free(current);
@@ -223,13 +227,23 @@ int32_t read_file(nodeptr_t head)
 
     int32_t node_num = 0;
     nodeptr_t current = head;
-    while (fscanf(fp, "%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
+    while (1) {
+        if (fscanf(fp, "%s %d %hd %hd %hd %hd %hhu", current->data.name, &current->data.stu_id,
             &current->data.score[0], &current->data.score[1], &current->data.score[2],
             &current->data.stu_age, &current->data.stu_sex) == NUM_ELEMENT) {
+            current_node_info(current, LOG_LEVEL_DEBUG);
+            MSG_DBG("fp: %ld\n", ftell(fp));
+        } else {
+            current_node_info(current, LOG_LEVEL_DATA);
+            MSG_ERR("fp: %ld\n", ftell(fp));
+            break;
+        }
         node_num++;
         if (fgetc(fp) == ASCII_NEW_LINE && fgetc(fp) == EOF) {
+        MSG_ERR("end of fiile fp: %ld\n", ftell(fp));
             break;
         } else {
+            MSG_ERR("fp: %ld\n", ftell(fp));
             fseek(fp, -1, SEEK_CUR);
             if ((current = add_endnode(current)) ==  NULL) {
                 MSG_ERR("add new link node error\n");
@@ -237,6 +251,7 @@ int32_t read_file(nodeptr_t head)
             }
         }
     }
+    MSG_DBG("fp: %ld\n", ftell(fp));
     fclose(fp);
     return node_num;
 }
@@ -265,9 +280,8 @@ int32_t view_info(nodeptr_t head, uint8_t *confirm_code)
         }
     } else if (node_num == 0) {
         MSG_INFO("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
-        if (scanf("%c", confirm_code) && *confirm_code == ASCII_NEW_LINE) {
-            scanf("%c", confirm_code);
-        }
+        scanf("%c", confirm_code);
+        scanf("%*[^\n]"); scanf("%*c");
         create_file(head, confirm_code);
     } else {
         MSG_ERR("read file error, result %d", node_num);
@@ -307,19 +321,21 @@ int32_t add_info(nodeptr_t head, uint8_t *confirm_code)
     }
 
         MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
-        if (scanf("%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
+        if (scanf("%s %d %hd %hd %hd %hd %hhu", current->data.name, &current->data.stu_id,
                 &current->data.score[0], &current->data.score[1], &current->data.score[2],
                 &current->data.stu_age, &current->data.stu_sex) != NUM_ELEMENT) {
+            scanf("%*[^\n]"); scanf("%*c");
             MSG_ERR("Please check student information.\n");
             return EINPUT;
         }
+        scanf("%*[^\n]"); scanf("%*c");
 
         MSG_PROMPT("Whether continue to add info? Press 'Y' or any other key to End!\n");
-        fflush(stdin);
         scanf("%c", confirm_code);
+        scanf("%*[^\n]"); scanf("%*c");
     }
     MSG_DBG("head ptr %p\n", head);
-    save_to_file(head, 0);
+    save_to_file(head, SaveFromHead);
 
     return EOK;
 }
@@ -334,6 +350,7 @@ int32_t delete_info(nodeptr_t head)
     uint32_t stu_id;
     MSG_PROMPT("Please input student id you want to delete.\n");
     scanf("%d", &stu_id);
+    scanf("%*[^\n]"); scanf("%*c");
 
     nodeptr_t current = head;
     for (; current != NULL; current = current->next) {
@@ -348,10 +365,9 @@ int32_t delete_info(nodeptr_t head)
     }
     if (current == NULL) {
         MSG_ERR("No information about the student was found\n");
-        fflush(stdin);
         return EINPUT;
     }
-    save_to_file(head, 0);
+    save_to_file(head, SaveFromHead);
 
     return EOK;
 }
@@ -365,17 +381,21 @@ int32_t modify_info(nodeptr_t head)
 {
     uint32_t stu_id;
     MSG_PROMPT("Please input student id you want to modify.\n");
-    fflush(stdin);
     scanf("%d", &stu_id);
+    scanf("%*[^\n]"); scanf("%*c");
 
     nodeptr_t current = head;
     for (; current != NULL; current = current->next) {
         if (current->data.stu_id == stu_id) {
             MSG_PROMPT("Input Name, ID, Ch & Math & Eng score, Age & Sex in proper order.\n");
-            scanf("%s %d %hd %hd %hd %hd %d", current->data.name, &current->data.stu_id,
+            if (scanf("%s %d %hd %hd %hd %hd %hhu", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
-                    &current->data.stu_age, &current->data.stu_sex);
-
+                    &current->data.stu_age, &current->data.stu_sex) != NUM_ELEMENT) {
+                scanf("%*[^\n]"); scanf("%*c");
+                MSG_ERR("Please check student information.\n");
+                return EINPUT;
+            }
+            scanf("%*[^\n]"); scanf("%*c");
             MSG_DATA("%s\n", STU_INFO_LABEL);
             current_node_info(current, LOG_LEVEL_DATA);
             break;
@@ -383,10 +403,9 @@ int32_t modify_info(nodeptr_t head)
     }
     if (current == NULL) {
         MSG_ERR("No information about the student was found!\n");
-        fflush(stdin);
         return EINPUT;
     }
-    save_to_file(head, 0);
+    save_to_file(head, SaveFromHead);
     return EOK;
 }
 
@@ -401,6 +420,7 @@ int32_t find_info(nodeptr_t head, uint8_t *confirm_code)
         MSG_PROMPT("Please input student id you want to find.\n");
         uint32_t stu_id = 0;
         scanf("%d", &stu_id);
+        scanf("%*[^\n]"); scanf("%*c");
         if (stu_id != 0) {
             nodeptr_t current = head;
             for (; current != NULL; current = current->next) {
@@ -414,8 +434,8 @@ int32_t find_info(nodeptr_t head, uint8_t *confirm_code)
                 MSG_ERR("No information about the student was found!\n");
             }
             MSG_PROMPT("Whether to continue? 'Y' or 'N'.\n");
-            fflush(stdin);
             scanf("%c", confirm_code);
+            scanf("%*[^\n]"); scanf("%*c");
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
                 continue;
             } else {
@@ -423,14 +443,13 @@ int32_t find_info(nodeptr_t head, uint8_t *confirm_code)
             }
         } else {
             MSG_ERR("Invalid input! Whether to continue? 'Y' or 'N'.\n");
-            fflush(stdin);
             scanf("%c", confirm_code);
+            scanf("%*[^\n]"); scanf("%*c");
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
                 continue;
             } else {
                 break;
             }
-            fflush(stdin);
         }
     }
     return EOK;
@@ -456,7 +475,7 @@ int32_t sort_info(nodeptr_t head)
         for (nodeptr_t current = head; current != NULL; current = current->next) {
             current_node_info(current, LOG_LEVEL_DEBUG);
         }
-        save_to_file(head, 0);
+        save_to_file(head, SaveFromHead);
     }
     return EOK;
 }

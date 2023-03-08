@@ -10,13 +10,11 @@
 #define __LIST_H
 
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include <unistd.h>
 #include <errno.h>
-#include <conio.h>
 
 extern uint8_t MSG_DBG_ENABLE;
 
@@ -83,12 +81,11 @@ do { \
 #define ANOTHER_WAY     0
 #define NUM_ELEMENT     7
 #define TRY_TIMES       3
+#define ASCII_CTRL_C    3
 #define ASCII_NEW_LINE  10
 #define ASCII_ENTER     13
-#define ASCII_CTRL_C    3
+#define ASCII_DEL       127
 
-#define TRUE            true
-#define FALSE           false
 #define EOK             0
 #define EINPUT         -1
 #define EALLOC         -2
@@ -113,7 +110,7 @@ typedef struct STU_INFO {
     uint32_t    stu_id;
     uint16_t    score[3];
     uint16_t    stu_age;
-    bool        stu_sex;
+    uint8_t     stu_sex;
 }stu_info_t;
 
 typedef struct NODE {
@@ -121,10 +118,20 @@ typedef struct NODE {
     struct NODE     *next;
 }node_t, *nodeptr_t;
 
+typedef enum BOOL {
+    FALSE = 0,
+    TRUE,
+}bool_t;
+
 typedef enum ENCRYPT_METHOD {
     BitwiseXOR = 1,
     Arithmetic,
 }encrypt_method_t;
+
+typedef enum SAVE_MODE {
+    SaveFromHead = 1,
+    SaveFromCurt,
+}save_mode_t;
 
 int32_t verify_passwd();
 int32_t set_secure_password();
@@ -138,7 +145,7 @@ nodeptr_t reverse_list(nodeptr_t head);
 nodeptr_t bubble_sort(nodeptr_t head);
 nodeptr_t quick_sort(nodeptr_t head, nodeptr_t end);
 
-int32_t save_to_file(nodeptr_t tmp, bool mode);
+int32_t save_to_file(nodeptr_t tmp, save_mode_t mode);
 int32_t create_file(nodeptr_t head, uint8_t *confirm_code);
 int32_t read_file(nodeptr_t head);
 int32_t view_info(nodeptr_t head, uint8_t *confirm_code);

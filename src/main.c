@@ -63,13 +63,13 @@ int32_t main(int32_t argc, char *argv[])
         set_secure_password();
         MSG_PROMPT("There is no Students' infomation here. Press 'Y' to add info or any other key to Exit!\n");
         scanf("%c", &ui_code);
+        scanf("%*[^\n]"); scanf("%*c");
         create_file(head, &ui_code);
     } else {
         read_file(head);
     }
 
     while (ui_code != 0) {
-        fflush(stdin);
         MSG_INFO("0. Exit the system\t");
         MSG_INFO("1. View all info\t");
         MSG_INFO("2. Add info\t\t");
@@ -78,9 +78,8 @@ int32_t main(int32_t argc, char *argv[])
         MSG_INFO("5. Find info\t\t");
         MSG_INFO("6. Sort info\n");
 
-        if (scanf("%c", &ui_code)  && ui_code == ASCII_NEW_LINE) {
-            scanf("%c", &ui_code);
-        }
+        scanf("%c", &ui_code);
+        scanf("%*[^\n]"); scanf("%*c");
         switch (ui_code) {
             case '0':
             case 'q':

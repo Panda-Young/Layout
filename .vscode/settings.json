@@ -11,6 +11,7 @@
         "cstdio": "c",
         "string_view": "c",
         "functional": "c",
-        "errno.h": "c"
+        "errno.h": "c",
+        "ctype.h": "c"
     }
 }
