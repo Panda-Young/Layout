@@ -49,7 +49,6 @@ void HiddenInput(int8_t *passwd)
 {
     int8_t ch = 0;
     int32_t len = 0;
-    scanf("%*[^\n]"); scanf("%*c");
     while (ch = mygetch())
     {
         if (ch == ASCII_NEW_LINE || ch == ASCII_ENTER || ch == ASCII_CTRL_C) { // [Enter] or [Ctrl + C]
