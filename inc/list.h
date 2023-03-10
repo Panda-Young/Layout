@@ -18,6 +18,7 @@
 
 extern uint8_t MSG_DBG_ENABLE;
 
+#define fflush_stdin() do {scanf("%*[^\n]"); scanf("%*c");} while (0)
 #define printf_grey(fmt, args...)   printf("\e[1;30m" fmt "\e[0m", ## args)
 #define MSG_INFO(fmt, args...) \
 do { \

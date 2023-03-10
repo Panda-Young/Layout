@@ -181,15 +181,15 @@ int32_t create_file(nodeptr_t head, uint8_t *confirm_code)
             if (scanf("%s %d %hd %hd %hd %hd %hhu", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
                     &current->data.stu_age, &current->data.stu_sex) != NUM_ELEMENT) {
-                scanf("%*[^\n]"); scanf("%*c");
+                fflush_stdin();
                 MSG_ERR("Please check student information.\n");
                 return EINPUT;
             }
-            scanf("%*[^\n]"); scanf("%*c");
+            fflush_stdin();
 
             MSG_PROMPT("Whether continue to add info? Press 'Y' or any other key to End!\n");
             scanf("%c", confirm_code);
-            scanf("%*[^\n]"); scanf("%*c");
+            fflush_stdin();
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
                 current = add_endnode(current);
             } else {
@@ -274,7 +274,7 @@ int32_t view_info(nodeptr_t head, uint8_t *confirm_code)
     } else if (node_num == 0) {
         MSG_INFO("The content of the file is empty! Press 'Y' to add info or any other key to Exit!\n");
         scanf("%c", confirm_code);
-        scanf("%*[^\n]"); scanf("%*c");
+        fflush_stdin();
         create_file(head, confirm_code);
     } else {
         MSG_ERR("read file error, result %d", node_num);
@@ -317,15 +317,15 @@ int32_t add_info(nodeptr_t head, uint8_t *confirm_code)
         if (scanf("%s %d %hd %hd %hd %hd %hhu", current->data.name, &current->data.stu_id,
                 &current->data.score[0], &current->data.score[1], &current->data.score[2],
                 &current->data.stu_age, &current->data.stu_sex) != NUM_ELEMENT) {
-            scanf("%*[^\n]"); scanf("%*c");
+            fflush_stdin();
             MSG_ERR("Please check student information.\n");
             return EINPUT;
         }
-        scanf("%*[^\n]"); scanf("%*c");
+        fflush_stdin();
 
         MSG_PROMPT("Whether continue to add info? Press 'Y' or any other key to End!\n");
         scanf("%c", confirm_code);
-        scanf("%*[^\n]"); scanf("%*c");
+        fflush_stdin();
     }
     MSG_DBG("head ptr %p\n", head);
     save_to_file(head, SaveFromHead);
@@ -343,7 +343,7 @@ int32_t delete_info(nodeptr_t head)
     uint32_t stu_id;
     MSG_PROMPT("Please input student id you want to delete.\n");
     scanf("%d", &stu_id);
-    scanf("%*[^\n]"); scanf("%*c");
+    fflush_stdin();
 
     nodeptr_t current = head;
     for (; current != NULL; current = current->next) {
@@ -353,15 +353,15 @@ int32_t delete_info(nodeptr_t head)
             Ppre->next = current->next;
             free(current);
             current = NULL;
-            break;
+            save_to_file(head, SaveFromHead);
+            MSG_INFO("This student infomation has been deleted.\n");
+            return EOK;
         }
     }
     if (current == NULL) {
         MSG_ERR("No information about the student was found\n");
         return EINPUT;
     }
-    save_to_file(head, SaveFromHead);
-
     return EOK;
 }
 
@@ -375,7 +375,7 @@ int32_t modify_info(nodeptr_t head)
     uint32_t stu_id;
     MSG_PROMPT("Please input student id you want to modify.\n");
     scanf("%d", &stu_id);
-    scanf("%*[^\n]"); scanf("%*c");
+    fflush_stdin();
 
     nodeptr_t current = head;
     for (; current != NULL; current = current->next) {
@@ -384,11 +384,11 @@ int32_t modify_info(nodeptr_t head)
             if (scanf("%s %d %hd %hd %hd %hd %hhu", current->data.name, &current->data.stu_id,
                     &current->data.score[0], &current->data.score[1], &current->data.score[2],
                     &current->data.stu_age, &current->data.stu_sex) != NUM_ELEMENT) {
-                scanf("%*[^\n]"); scanf("%*c");
+                fflush_stdin();
                 MSG_ERR("Please check student information.\n");
                 return EINPUT;
             }
-            scanf("%*[^\n]"); scanf("%*c");
+            fflush_stdin();
             MSG_DATA("%s\n", STU_INFO_LABEL);
             current_node_info(current, LOG_LEVEL_DATA);
             break;
@@ -413,7 +413,7 @@ int32_t find_info(nodeptr_t head, uint8_t *confirm_code)
         MSG_PROMPT("Please input student id you want to find.\n");
         uint32_t stu_id = 0;
         scanf("%d", &stu_id);
-        scanf("%*[^\n]"); scanf("%*c");
+        fflush_stdin();
         if (stu_id != 0) {
             nodeptr_t current = head;
             for (; current != NULL; current = current->next) {
@@ -428,7 +428,7 @@ int32_t find_info(nodeptr_t head, uint8_t *confirm_code)
             }
             MSG_PROMPT("Whether to continue? 'Y' or 'N'.\n");
             scanf("%c", confirm_code);
-            scanf("%*[^\n]"); scanf("%*c");
+            fflush_stdin();
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
                 continue;
             } else {
@@ -437,7 +437,7 @@ int32_t find_info(nodeptr_t head, uint8_t *confirm_code)
         } else {
             MSG_ERR("Invalid input! Whether to continue? 'Y' or 'N'.\n");
             scanf("%c", confirm_code);
-            scanf("%*[^\n]"); scanf("%*c");
+            fflush_stdin();
             if (*confirm_code == 'y' || *confirm_code == 'Y') {
                 continue;
             } else {

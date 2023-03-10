@@ -58,12 +58,13 @@ int32_t main(int32_t argc, char *argv[])
     }
     head->next = NULL;
     uint8_t ui_code = ASCII_ENTER;
+    uint8_t login = 0;
 
     if (access(FILE_NAME, F_OK)) {
         set_secure_password();
         MSG_PROMPT("There is no Students' infomation here. Press 'Y' to add info or any other key to Exit!\n");
         scanf("%c", &ui_code);
-        scanf("%*[^\n]"); scanf("%*c");
+        fflush_stdin();
         create_file(head, &ui_code);
     } else {
         read_file(head);
@@ -79,7 +80,7 @@ int32_t main(int32_t argc, char *argv[])
         MSG_INFO("6. Sort info\n");
 
         scanf("%c", &ui_code);
-        scanf("%*[^\n]"); scanf("%*c");
+        fflush_stdin();
         switch (ui_code) {
             case '0':
             case 'q':
@@ -91,11 +92,15 @@ int32_t main(int32_t argc, char *argv[])
             case '1':
             case 'v':
             case 'V': {
-                if (verify_passwd()) {
+                if (login) {
+                    view_info(head, &ui_code);
+                } else if (verify_passwd() == 0) {
+                    login = 1;
+                    view_info(head, &ui_code);
+                } else {
                     ui_code = 0;
                     break;
                 }
-                view_info(head, &ui_code);
                 break;
             }
             case '2':
