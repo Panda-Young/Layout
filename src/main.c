@@ -51,7 +51,7 @@ int32_t main(int32_t argc, char *argv[])
         }
     }
 
-    nodeptr_t head = (nodeptr_t)malloc(sizeof(node_t));
+    nodeptr_t head = (nodeptr_t)calloc(sizeof(node_t), 1);
     if (head == NULL) {
         perror("malloc failed: ");
         return EALLOC;
@@ -141,11 +141,7 @@ int32_t main(int32_t argc, char *argv[])
         }
     }
 
-    int32_t counter = 1;
-    for (nodeptr_t current = head; current != NULL; current = current->next) {
-        MSG_DBG("%d\t current ptr %p\n", counter++, current);
-        free(current);
-    }
+    free_all_node(head);
 
     return EOK;
 }

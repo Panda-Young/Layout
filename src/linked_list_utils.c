@@ -43,7 +43,7 @@ nodeptr_t add_endnode(nodeptr_t end)
         MSG_INFO("end node is NULL.\n");
         return NULL;
     }
-    nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
+    nodeptr_t newnode = (nodeptr_t)calloc(sizeof(node_t), 1);
     if (newnode == NULL) {
         perror("malloc failed: ");
         return NULL;
@@ -59,7 +59,7 @@ nodeptr_t add_beginnode(nodeptr_t head)
         MSG_INFO("head node is NULL.\n");
         return NULL;
     }
-    nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
+    nodeptr_t newnode = (nodeptr_t)calloc(sizeof(node_t), 1);
     if (newnode == NULL) {
         perror("malloc failed: ");
         return NULL;
@@ -74,7 +74,7 @@ nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
         MSG_INFO("head or current node is NULL.\n");
         return NULL;
     }
-    nodeptr_t newnode = (nodeptr_t)malloc(sizeof(node_t));
+    nodeptr_t newnode = (nodeptr_t)calloc(sizeof(node_t), 1);
     if (newnode == NULL) {
         perror("malloc failed: ");
         return NULL;
@@ -91,6 +91,16 @@ nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current)
     current->next = newnode;
 #endif
     return newnode;
+}
+
+void free_all_node(nodeptr_t head)
+{
+    for(nodeptr_t current = head, free_node; current!=NULL;) {
+        free_node=current;
+        current=free_node->next;
+        free(free_node);
+        free_node = NULL;
+    }
 }
 
 /**

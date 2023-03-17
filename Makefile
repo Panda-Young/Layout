@@ -19,7 +19,7 @@ main : $(OBJ)
 	gcc $(OBJ) -o main
 
 %.o : %.c
-	gcc -c $^ -o $@  $(CPPFLAGS)
+	gcc -g -c $^ -o $@  $(CPPFLAGS)
 
 .PHONY:clean debug
 

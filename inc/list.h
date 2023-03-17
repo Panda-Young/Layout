@@ -142,6 +142,7 @@ void current_node_info(nodeptr_t current, log_level_t level);
 nodeptr_t add_endnode(nodeptr_t end);
 nodeptr_t add_beginnode(nodeptr_t head);
 nodeptr_t add_randomnode(nodeptr_t head, nodeptr_t current);
+void free_all_node(nodeptr_t head);
 nodeptr_t reverse_list(nodeptr_t head);
 nodeptr_t bubble_sort(nodeptr_t head);
 nodeptr_t quick_sort(nodeptr_t head, nodeptr_t end);
