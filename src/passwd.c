@@ -54,7 +54,7 @@ void HiddenInput(int8_t *passwd)
         if (ch == ASCII_NEW_LINE || ch == ASCII_ENTER || ch == ASCII_CTRL_C) { // [Enter] or [Ctrl + C]
             break;
         }
-        if (ch != '\b') { // [backspace]
+        if (ch != '\b' && ch != ASCII_DEL) { // [backspace] or [Delete]
             if (isalnum(ch) == 0) {
                 continue;
             }
