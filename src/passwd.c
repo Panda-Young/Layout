@@ -59,15 +59,15 @@ void HiddenInput(int8_t *passwd)
                 continue;
             }
             passwd[len] = ch;
-            MSG_INFO("*");
+            printf("*");
             len++;
         } else {
-            MSG_INFO("\b \b");
+            printf("\b \b");
             len--;
         }
     }
     passwd[len] = '\0';
-    MSG_INFO("\n");
+    printf("\n");
     MSG_DBG("HiddenInput:%s\n", passwd);
 }
 

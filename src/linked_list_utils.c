@@ -256,6 +256,7 @@ int32_t read_file(nodeptr_t head)
         }
     }
     fclose(fp);
+    fp = NULL;
     return node_num;
 }
 
@@ -350,7 +351,7 @@ int32_t add_info(nodeptr_t head, uint8_t *confirm_code)
  */
 int32_t delete_info(nodeptr_t head)
 {
-    uint32_t stu_id;
+    uint32_t stu_id = 0;
     MSG_PROMPT("Please input student id you want to delete.\n");
     scanf("%d", &stu_id);
     fflush_stdin();
@@ -382,7 +383,7 @@ int32_t delete_info(nodeptr_t head)
  */
 int32_t modify_info(nodeptr_t head)
 {
-    uint32_t stu_id;
+    uint32_t stu_id = 0;
     MSG_PROMPT("Please input student id you want to modify.\n");
     scanf("%d", &stu_id);
     fflush_stdin();
