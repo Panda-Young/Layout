@@ -7,6 +7,7 @@
  */
 
 #include "list.h"
+#include "log.h"
 
 /**
  * @description: print the current node student's information

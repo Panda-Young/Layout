@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "patchfile": "c",
+        "README": "python",
+        "*.ac": "shellscript",
+        "configure": "shellscript",
+        "passwd": "plaintext",
         "conio.h": "c",
         "unistd.h": "c",
         "list.h": "c",
@@ -12,6 +16,7 @@
         "string_view": "c",
         "functional": "c",
         "errno.h": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "log.h": "c"
     }
 }

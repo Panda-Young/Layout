@@ -7,6 +7,7 @@
  */
 
 #include "list.h"
+#include "log.h"
 #include <ctype.h>
 
 #define MAX_INPUT_LEN 30

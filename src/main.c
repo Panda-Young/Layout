@@ -7,6 +7,7 @@
  */
 
 #include "list.h"
+#include "log.h"
 
 uint8_t MSG_DBG_ENABLE = FALSE;
 
@@ -18,6 +19,10 @@ uint8_t MSG_DBG_ENABLE = FALSE;
  */
 int32_t main(int32_t argc, char *argv[])
 {
+    if (check_license() != 0) {
+        return 0;
+    }
+
     MSG_PROMPT("Welcome to Use the Student Information Management System!\n");
 
     int8_t optind_ch;
@@ -37,6 +42,7 @@ int32_t main(int32_t argc, char *argv[])
                 break;
             }
             case 'h' : {
+                god_bless_you();
                 MSG_PROMPT("Please follow the instructions to choose.\n");
                 break;
             }

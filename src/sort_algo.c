@@ -7,6 +7,7 @@
  */
 
 #include "list.h"
+#include "log.h"
 
 void swap_node(nodeptr_t tmp_a, nodeptr_t tmp_b)
 {
