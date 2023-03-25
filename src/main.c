@@ -42,7 +42,7 @@ int32_t main(int32_t argc, char *argv[])
                 break;
             }
             case 'h' : {
-                god_bless_you();
+                bless_you();
                 MSG_PROMPT("Please follow the instructions to choose.\n");
                 break;
             }

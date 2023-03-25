@@ -17,6 +17,7 @@
         "functional": "c",
         "errno.h": "c",
         "ctype.h": "c",
-        "log.h": "c"
+        "log.h": "c",
+        "time.h": "c"
     }
 }

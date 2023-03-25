@@ -71,6 +71,6 @@ do { \
 } while (0)
 #define printf_white(fmt, args...)  printf("\e[1;37m" fmt "\e[0m", ## args)
 
-void god_bless_you();
+void bless_you();
 
 #endif
