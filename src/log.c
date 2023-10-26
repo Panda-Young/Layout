@@ -1,10 +1,10 @@
-/*
+/******************************************************************************
  * @Description: god bless you
  * @version: 0.1.0
  * @Author: Panda-Young
  * @Date: 2023-03-25 05:20:35
  * Copyright (c) 2023 by Panda-Young, All Rights Reserved.
- */
+ *****************************************************************************/
 
 #include "log.h"
 #include <stdlib.h>

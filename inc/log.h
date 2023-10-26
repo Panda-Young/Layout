@@ -1,10 +1,10 @@
-/*
+/******************************************************************************
  * @Description: log header
  * @version: 0.1.0
  * @Author: Panda-Young
  * @Date: 2022-04-09 03:28:51
  * @Copyright (c) 2022 by Panda-Young, All Rights Reserved.
- */
+ *****************************************************************************/
 
 #ifndef __LOG_H
 #define __LOG_H

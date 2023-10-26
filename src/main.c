@@ -1,10 +1,10 @@
-/*
+/******************************************************************************
  * @Description: The Student Infomation Management System.
  * @version: 1.1.1
  * @Author: Panda-Young
  * @Date: 2022-04-09 03:25:39
  * Copyright (c) 2022 by Panda-Young, All Rights Reserved.
- */
+ *****************************************************************************/
 
 #include "list.h"
 #include "log.h"

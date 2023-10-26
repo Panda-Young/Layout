@@ -1,16 +1,16 @@
-/*
+/******************************************************************************
  * @Description: calculate date difference
  * @version: 0.1.0
  * @Author: Panda-Young
  * @Date: 2023-02-22 11:00:38
  * Copyright (c) 2023 by Panda-Young, All Rights Reserved. 
- */
+ *****************************************************************************/
 
 #include "list.h"
 #include "log.h"
 #include <time.h>
 
-#define LICENSE_TIME 90
+#define LICENSE_DAY 9000
 
 /**
  * @description: is leap year
@@ -123,14 +123,14 @@ int32_t check_license()
         free(now_tm);
         return EALLOC;
     }
-    time_t end_time = mktime(begin_tm) + LICENSE_TIME * 24 * 60 * 60;
+    time_t end_time = mktime(begin_tm) + LICENSE_DAY * 24 * 60 * 60;
     localtime_ptr = localtime(&end_time);
     memcpy(end_tm, localtime_ptr, sizeof(struct tm));
 
-    if (date_diff(begin_tm, now_tm) > LICENSE_TIME) {
+    if (date_diff(begin_tm, now_tm) > LICENSE_DAY) {
         MSG_ERR("Your license has expired.\n");
         license_valid = 1;
-    } else if (date_diff(begin_tm, now_tm) > LICENSE_TIME - 3) {
+    } else if (date_diff(begin_tm, now_tm) > LICENSE_DAY - 3) {
         MSG_INFO("Your license is about to expire in 3 days.\n");
     } else {
         MSG_INFO("Your license is valid until %d/%d/%d\n", end_tm->tm_year + 1900, end_tm->tm_mon + 1, end_tm->tm_mday);

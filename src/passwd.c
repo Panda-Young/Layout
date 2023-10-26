@@ -1,10 +1,10 @@
-/*
+/******************************************************************************
  * @Description: Secure password input and verification.
  * @version: 0.1.0
  * @Author: Panda-Young
  * @Date: 2022-04-10 01:51:03
  * Copyright (c) 2022 by Panda-Young, All Rights Reserved.
- */
+ *****************************************************************************/
 
 #include "list.h"
 #include "log.h"

@@ -1,10 +1,10 @@
-/*
+/******************************************************************************
  * @Description: The specific inplementation of various function of the link list.
  * @version: 0.1.0
  * @Author: Panda-Young
  * @Date: 2022-04-10 02:24:32
  * Copyright (c) 2022 by Panda-Young, All Rights Reserved.
- */
+ *****************************************************************************/
 
 #include "list.h"
 #include "log.h"

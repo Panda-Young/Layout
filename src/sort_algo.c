@@ -1,10 +1,10 @@
-/*
+/******************************************************************************
  * @Description: The specific inplementation of various sorting algorithms.
  * @version: 0.1.0
  * @Author: Panda-Young
  * @Date: 2022-05-08 11:11:11
  * Copyright (c) 2022 by Panda-Young, All Rights Reserved.
- */
+ *****************************************************************************/
 
 #include "list.h"
 #include "log.h"
